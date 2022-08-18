@@ -12,7 +12,7 @@ Whether you're developing a website with Facebook login, creating a Facebook Can
 The Facebook SDK for PHP is installed with [Composer](#installing-with-composer-recommended). Simply run the following in the root of your project.
 
 ```
-composer require joelbutcher/facebook-graph-sdk
+composer require heniroger/facebook-graph-sdk
 ```
 
 > The Facebook SDK starting adhering to [SemVer](http://semver.org/) with version 5. Previous to version 5, the SDK did not follow SemVer.
