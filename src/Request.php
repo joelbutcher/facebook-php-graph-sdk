@@ -30,6 +30,7 @@ use Facebook\FileUpload\Video;
 use Facebook\Http\RequestBodyMultipart;
 use Facebook\Http\RequestBodyUrlEncoded;
 use Facebook\Url\UrlManipulator;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class Request.
@@ -94,6 +95,13 @@ class Request
      */
     public function __construct(Application $app = null, $accessToken = null, $method = null, $endpoint = null, array $params = [], $eTag = null, $graphVersion = null)
     {
+        Log::error('New request $app: '.json_encode($app));
+        Log::error('New request $accessToken: '.json_encode($accessToken));
+        Log::error('New request $method: '.json_encode($method));
+        Log::error('New request $endpoint: '.json_encode($endpoint));
+        Log::error('New request $params: '.json_encode($params));
+        Log::error('New request $eTag: '.json_encode($eTag));
+        Log::error('New request $graphVersion: '.json_encode($graphVersion));
         $this->setApp($app);
         $this->setAccessToken($accessToken);
         $this->setMethod($method);
