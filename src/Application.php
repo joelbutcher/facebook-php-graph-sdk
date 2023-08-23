@@ -107,12 +107,4 @@ class Application implements \Serializable
 
         $this->__construct($id, $secret);
     }
-
-    public function __serialize()
-    {
-    }
-
-    public function __unserialize(array $data)
-    {
-    }
 }
