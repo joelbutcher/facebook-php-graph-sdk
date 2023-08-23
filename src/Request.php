@@ -338,7 +338,10 @@ class Request
 
         // @TODO Refactor code above with this
         //$params = $this->sanitizeAuthenticationParams($params);
-        $params = $this->sanitizeFileParams($params);
+        //OLD $params = $this->sanitizeFileParams($params);
+        if(!isset($params['platform']) || (isset($params['platform']) && $params['platform'] !== 'instagram')){
+            $params = $this->sanitizeFileParams($params);
+        }
         $this->dangerouslySetParams($params);
 
         return $this;
