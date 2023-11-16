@@ -432,8 +432,6 @@ class Facebook
     /**
      * Sends a request to Graph and returns the result.
      *
-     * @param string                  $method
-     * @param string                  $endpoint
      * @param array                   $params
      * @param null|AccessToken|string $accessToken
      * @param null|string             $eTag
@@ -443,7 +441,7 @@ class Facebook
      *
      * @return Response
      */
-    public function sendRequest($method, $endpoint, array $params = [], $accessToken = null, $eTag = null, $graphVersion = null)
+    public function sendRequest(string $method, string $endpoint, array $params = [], $accessToken = null, $eTag = null, $graphVersion = null)
     {
         $accessToken = $accessToken ?: $this->defaultAccessToken;
         $graphVersion = $graphVersion ?: $this->defaultGraphVersion;
@@ -513,7 +511,7 @@ class Facebook
      *
      * @return Request
      */
-    public function request($method, $endpoint, array $params = [], $accessToken = null, $eTag = null, $graphVersion = null)
+    public function request(string $method, string $endpoint, array $params = [], $accessToken = null, $eTag = null, $graphVersion = null)
     {
         $accessToken = $accessToken ?: $this->defaultAccessToken;
         $graphVersion = $graphVersion ?: $this->defaultGraphVersion;

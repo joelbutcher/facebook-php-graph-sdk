@@ -49,7 +49,7 @@ class Request
     /**
      * @var string the HTTP method for this request
      */
-    protected $method;
+    protected string $method;
 
     /**
      * @var string the Graph endpoint for this request
@@ -92,7 +92,7 @@ class Request
      * @param null|string             $eTag
      * @param null|string             $graphVersion
      */
-    public function __construct(Application $app = null, $accessToken = null, $method = null, $endpoint = null, array $params = [], $eTag = null, $graphVersion = null)
+    public function __construct(Application $app = null, $accessToken = null, string $method, $endpoint = null, array $params = [], $eTag = null, $graphVersion = null)
     {
         $this->setApp($app);
         $this->setAccessToken($accessToken);
@@ -209,23 +209,12 @@ class Request
         }
     }
 
-    /**
-     * Set the HTTP method for this request.
-     *
-     * @param string
-     * @param mixed $method
-     */
-    public function setMethod($method)
+    public function setMethod(string $method): void
     {
         $this->method = strtoupper($method);
     }
 
-    /**
-     * Return the HTTP method for this request.
-     *
-     * @return string
-     */
-    public function getMethod()
+    public function getMethod(): string
     {
         return $this->method;
     }
