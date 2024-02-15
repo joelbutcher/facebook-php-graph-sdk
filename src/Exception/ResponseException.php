@@ -82,7 +82,7 @@ class ResponseException extends SDKException
                 case 464:
                 case 467:
                     return new static($response, new AuthenticationException($message, $code));
-                    // Video upload resumable error
+                // Video upload resumable error
                 case 1363030:
                 case 1363019:
                 case 1363037:
@@ -100,12 +100,12 @@ class ResponseException extends SDKException
             case 190:
                 return new static($response, new AuthenticationException($message, $code));
 
-                // Server issue, possible downtime
+            // Server issue, possible downtime
             case 1:
             case 2:
                 return new static($response, new ServerException($message, $code));
 
-                // API Throttling
+            // API Throttling
             case 4:
             case 17:
             case 32:
@@ -113,7 +113,7 @@ class ResponseException extends SDKException
             case 613:
                 return new static($response, new ThrottleException($message, $code));
 
-                // Duplicate Post
+            // Duplicate Post
             case 506:
                 return new static($response, new ClientException($message, $code));
         }
