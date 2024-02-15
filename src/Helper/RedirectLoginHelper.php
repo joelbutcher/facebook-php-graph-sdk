@@ -149,7 +149,7 @@ class RedirectLoginHelper
             'access_token' => $accessToken->getValue(),
         ];
 
-        return 'https://www.facebook.com/logout.php?'.http_build_query($params, null, $separator);
+        return 'https://www.facebook.com/logout.php?'.http_build_query($params, '', $separator);
     }
 
     /**
