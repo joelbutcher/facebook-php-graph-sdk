@@ -124,7 +124,7 @@ class Facebook
             throw new SDKException('Required "app_secret" key not supplied in config and could not find fallback environment variable "'.static::APP_SECRET_ENV_NAME.'"');
         }
         if ($config['http_client'] !== null && !$config['http_client'] instanceof ClientInterface) {
-            throw new \InvalidArgumentException('Required "http_client" key to be null or an instance of \Http\Client\HttpClient');
+            throw new \InvalidArgumentException('Required "http_client" key to be null or an instance of \Psr\Http\Client\ClientInterface');
         }
         if (!$config['default_graph_version']) {
             throw new \InvalidArgumentException('Required "default_graph_version" key not supplied in config');
