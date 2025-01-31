@@ -110,9 +110,14 @@ class Application implements \Serializable
 
     public function __serialize()
     {
+        return [
+            'id' => $this->id,
+            'secret' => $this->secret,
+        ];
     }
 
     public function __unserialize(array $data)
     {
+        $this->__construct($data['id'], $data['secret']);
     }
 }
