@@ -23,6 +23,4 @@
 
 namespace Facebook\FileUpload;
 
-class Video extends File
-{
-}
+class Video extends File {}

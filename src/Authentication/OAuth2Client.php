@@ -36,7 +36,7 @@ class OAuth2Client
     /**
      * @const string The base authorization URL.
      */
-    const BASE_AUTHORIZATION_URL = 'https://www.facebook.com';
+    public const BASE_AUTHORIZATION_URL = 'https://www.facebook.com';
 
     /**
      * The Application entity.
@@ -133,12 +133,12 @@ class OAuth2Client
             'client_id'     => $this->app->getId(),
             'state'         => $state,
             'response_type' => 'code',
-            'sdk'           => 'php-sdk-'.Facebook::VERSION,
+            'sdk'           => 'php-sdk-' . Facebook::VERSION,
             'redirect_uri'  => $redirectUrl,
             'scope'         => implode(',', $scope),
         ];
 
-        return static::BASE_AUTHORIZATION_URL.'/'.$this->graphVersion.'/dialog/oauth?'.http_build_query($params, '', $separator);
+        return static::BASE_AUTHORIZATION_URL . '/' . $this->graphVersion . '/dialog/oauth?' . http_build_query($params, '', $separator);
     }
 
     /**

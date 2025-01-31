@@ -134,7 +134,7 @@ class SignedRequest
         $hashedSig = $this->hashSignature($encodedPayload);
         $encodedSig = $this->base64UrlEncode($hashedSig);
 
-        return $encodedSig.'.'.$encodedPayload;
+        return $encodedSig . '.' . $encodedPayload;
     }
 
     /**

@@ -23,6 +23,4 @@
 
 namespace Facebook\Exception;
 
-class ThrottleException extends SDKException
-{
-}
+class ThrottleException extends SDKException {}

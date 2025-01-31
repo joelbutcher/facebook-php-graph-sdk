@@ -34,17 +34,17 @@ class GraphNodeFactory
     /**
      * @const string The base graph object class.
      */
-    const BASE_GRAPH_NODE_CLASS = GraphNode::class;
+    public const BASE_GRAPH_NODE_CLASS = GraphNode::class;
 
     /**
      * @const string The base graph edge class.
      */
-    const BASE_GRAPH_EDGE_CLASS = GraphEdge::class;
+    public const BASE_GRAPH_EDGE_CLASS = GraphEdge::class;
 
     /**
      * @const string The graph object prefix.
      */
-    const BASE_GRAPH_OBJECT_PREFIX = '\Facebook\GraphNode\\';
+    public const BASE_GRAPH_OBJECT_PREFIX = '\Facebook\GraphNode\\';
 
     /**
      * @var Response the response entity from Graph
@@ -93,7 +93,7 @@ class GraphNodeFactory
      */
     public function makeGraphAchievement()
     {
-        return $this->makeGraphNode(static::BASE_GRAPH_OBJECT_PREFIX.'GraphAchievement');
+        return $this->makeGraphNode(static::BASE_GRAPH_OBJECT_PREFIX . 'GraphAchievement');
     }
 
     /**
@@ -105,7 +105,7 @@ class GraphNodeFactory
      */
     public function makeGraphAlbum()
     {
-        return $this->makeGraphNode(static::BASE_GRAPH_OBJECT_PREFIX.'GraphAlbum');
+        return $this->makeGraphNode(static::BASE_GRAPH_OBJECT_PREFIX . 'GraphAlbum');
     }
 
     /**
@@ -117,7 +117,7 @@ class GraphNodeFactory
      */
     public function makeGraphPage()
     {
-        return $this->makeGraphNode(static::BASE_GRAPH_OBJECT_PREFIX.'GraphPage');
+        return $this->makeGraphNode(static::BASE_GRAPH_OBJECT_PREFIX . 'GraphPage');
     }
 
     /**
@@ -129,7 +129,7 @@ class GraphNodeFactory
      */
     public function makeGraphSessionInfo()
     {
-        return $this->makeGraphNode(static::BASE_GRAPH_OBJECT_PREFIX.'GraphSessionInfo');
+        return $this->makeGraphNode(static::BASE_GRAPH_OBJECT_PREFIX . 'GraphSessionInfo');
     }
 
     /**
@@ -141,7 +141,7 @@ class GraphNodeFactory
      */
     public function makeGraphUser()
     {
-        return $this->makeGraphNode(static::BASE_GRAPH_OBJECT_PREFIX.'GraphUser');
+        return $this->makeGraphNode(static::BASE_GRAPH_OBJECT_PREFIX . 'GraphUser');
     }
 
     /**
@@ -153,7 +153,7 @@ class GraphNodeFactory
      */
     public function makeGraphEvent()
     {
-        return $this->makeGraphNode(static::BASE_GRAPH_OBJECT_PREFIX.'GraphEvent');
+        return $this->makeGraphNode(static::BASE_GRAPH_OBJECT_PREFIX . 'GraphEvent');
     }
 
     /**
@@ -165,7 +165,7 @@ class GraphNodeFactory
      */
     public function makeGraphGroup()
     {
-        return $this->makeGraphNode(static::BASE_GRAPH_OBJECT_PREFIX.'GraphGroup');
+        return $this->makeGraphNode(static::BASE_GRAPH_OBJECT_PREFIX . 'GraphGroup');
     }
 
     /**
@@ -184,7 +184,7 @@ class GraphNodeFactory
         $this->validateResponseCastableAsGraphEdge();
 
         if ($subclassName && $auto_prefix) {
-            $subclassName = static::BASE_GRAPH_OBJECT_PREFIX.$subclassName;
+            $subclassName = static::BASE_GRAPH_OBJECT_PREFIX . $subclassName;
         }
 
         return $this->castAsGraphNodeOrGraphEdge($this->decodedBody, $subclassName);
@@ -324,7 +324,7 @@ class GraphNodeFactory
         $metaData = $this->getMetaData($data);
 
         // We'll need to make an edge endpoint for this in case it's a GraphEdge (for cursor pagination)
-        $parentGraphEdgeEndpoint = $parentNodeId && $parentKey ? '/'.$parentNodeId.'/'.$parentKey : null;
+        $parentGraphEdgeEndpoint = $parentNodeId && $parentKey ? '/' . $parentNodeId . '/' . $parentKey : null;
         $className = static::BASE_GRAPH_EDGE_CLASS;
 
         return new $className($this->response->getRequest(), $dataList, $metaData, $parentGraphEdgeEndpoint, $subclassName);
@@ -374,6 +374,6 @@ class GraphNodeFactory
             return;
         }
 
-        throw new SDKException('The given subclass "'.$subclassName.'" is not valid. Cannot cast to an object that is not a GraphNode subclass.', 620);
+        throw new SDKException('The given subclass "' . $subclassName . '" is not valid. Cannot cast to an object that is not a GraphNode subclass.', 620);
     }
 }

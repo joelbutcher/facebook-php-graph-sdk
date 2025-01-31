@@ -25,6 +25,4 @@ namespace Facebook\Tests\Fixtures;
 
 use Facebook\GraphNode\GraphNode;
 
-class MyFooSubClassGraphNode extends GraphNode
-{
-}
+class MyFooSubClassGraphNode extends GraphNode {}

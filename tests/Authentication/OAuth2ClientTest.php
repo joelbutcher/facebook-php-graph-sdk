@@ -35,7 +35,7 @@ class OAuth2ClientTest extends TestCase
     /**
      * @const The foo Graph version
      */
-    const TESTING_GRAPH_VERSION = 'v1337';
+    public const TESTING_GRAPH_VERSION = 'v1337';
 
     /**
      * @var FooClientForOAuth2Test
@@ -83,19 +83,19 @@ class OAuth2ClientTest extends TestCase
 
         $this->assertStringContainsStringIgnoringCase('*', $authUrl);
 
-        $expectedUrl = 'https://www.facebook.com/'.static::TESTING_GRAPH_VERSION.'/dialog/oauth?';
+        $expectedUrl = 'https://www.facebook.com/' . static::TESTING_GRAPH_VERSION . '/dialog/oauth?';
         $this->assertStringStartsWith($expectedUrl, $authUrl, 'Unexpected base authorization URL returned from getAuthorizationUrl().');
 
         $params = [
             'client_id'    => '123',
             'redirect_uri' => 'https://foo.bar',
             'state'        => 'foo_state',
-            'sdk'          => 'php-sdk-'.Facebook::VERSION,
+            'sdk'          => 'php-sdk-' . Facebook::VERSION,
             'scope'        => implode(',', $scope),
             'foo'          => 'bar',
         ];
         foreach ($params as $key => $value) {
-            $this->assertStringContainsStringIgnoringCase($key.'='.urlencode($value), $authUrl);
+            $this->assertStringContainsStringIgnoringCase($key . '=' . urlencode($value), $authUrl);
         }
     }
 

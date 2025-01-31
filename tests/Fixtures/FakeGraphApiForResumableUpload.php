@@ -62,8 +62,8 @@ class FakeGraphApiForResumableUpload implements ClientInterface
             return new Response(
                 500,
                 ['Foo' => 'Bar'],
-                '{"error":{"message":"Error validating access token: Session has expired on Monday, '.
-                '10-Aug-15 01:00:00 PDT. The current time is Monday, 10-Aug-15 01:14:23 PDT.",'.
+                '{"error":{"message":"Error validating access token: Session has expired on Monday, ' .
+                '10-Aug-15 01:00:00 PDT. The current time is Monday, 10-Aug-15 01:14:23 PDT.",' .
                 '"type":"OAuthException","code":190,"error_subcode":463}}'
             );
         }
@@ -81,7 +81,7 @@ class FakeGraphApiForResumableUpload implements ClientInterface
             return new Response(
                 500,
                 ['Foo' => 'Bar'],
-                '{"error":{"message":"There was a problem uploading your video. Please try uploading it again.",'.
+                '{"error":{"message":"There was a problem uploading your video. Please try uploading it again.",' .
                 '"type":"ApiException","code":6000,"error_subcode":1363019}}'
             );
         }

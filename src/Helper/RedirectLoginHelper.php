@@ -37,7 +37,7 @@ class RedirectLoginHelper
     /**
      * @const int The length of CSRF string to validate the login link.
      */
-    const CSRF_LENGTH = 32;
+    public const CSRF_LENGTH = 32;
 
     /**
      * @var OAuth2Client The OAuth 2.0 client service.
@@ -149,7 +149,7 @@ class RedirectLoginHelper
             'access_token' => $accessToken->getValue(),
         ];
 
-        return 'https://www.facebook.com/logout.php?'.http_build_query($params, '', $separator);
+        return 'https://www.facebook.com/logout.php?' . http_build_query($params, '', $separator);
     }
 
     /**

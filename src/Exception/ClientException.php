@@ -23,6 +23,4 @@
 
 namespace Facebook\Exception;
 
-class ClientException extends SDKException
-{
-}
+class ClientException extends SDKException {}

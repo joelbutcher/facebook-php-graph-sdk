@@ -30,7 +30,7 @@ class UrlDetectionHandler implements UrlDetectionInterface
      */
     public function getCurrentUrl()
     {
-        return $this->getHttpScheme().'://'.$this->getHostName().$this->getServerVar('REQUEST_URI');
+        return $this->getHttpScheme() . '://' . $this->getHostName() . $this->getServerVar('REQUEST_URI');
     }
 
     /**
@@ -107,14 +107,14 @@ class UrlDetectionHandler implements UrlDetectionInterface
         // Port number
         $scheme = $this->getHttpScheme();
         $port = $this->getCurrentPort();
-        $appendPort = ':'.$port;
+        $appendPort = ':' . $port;
 
         // Don't append port number if a normal port.
         if (($scheme == 'http' && $port == '80') || ($scheme == 'https' && $port == '443')) {
             $appendPort = '';
         }
 
-        return $host.$appendPort;
+        return $host . $appendPort;
     }
 
     protected function getCurrentPort()
@@ -154,7 +154,7 @@ class UrlDetectionHandler implements UrlDetectionInterface
      */
     protected function getHeader($key)
     {
-        return $this->getServerVar('HTTP_'.$key);
+        return $this->getServerVar('HTTP_' . $key);
     }
 
     /**

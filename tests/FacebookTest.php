@@ -51,7 +51,7 @@ class FacebookTest extends TestCase
         $this->expectException(\Facebook\Exception\SDKException::class);
 
         // unset value so there is no fallback to test expected Exception
-        putenv(Facebook::APP_ID_ENV_NAME.'=');
+        putenv(Facebook::APP_ID_ENV_NAME . '=');
         $config = [
             'app_secret'            => 'foo_secret',
             'default_graph_version' => 'v11.0',
@@ -64,7 +64,7 @@ class FacebookTest extends TestCase
         $this->expectException(\Facebook\Exception\SDKException::class);
 
         // unset value so there is no fallback to test expected Exception
-        putenv(Facebook::APP_SECRET_ENV_NAME.'=');
+        putenv(Facebook::APP_SECRET_ENV_NAME . '=');
         $config = [
             'app_id'                => 'foo_id',
             'default_graph_version' => 'v11.0',
@@ -277,7 +277,7 @@ class FacebookTest extends TestCase
             'http_client' => new FakeGraphApiForResumableUpload(),
         ]);
         $fb = new Facebook($config);
-        $response = $fb->uploadVideo('me', __DIR__.'/foo.txt', [], 'foo-token', 3);
+        $response = $fb->uploadVideo('me', __DIR__ . '/foo.txt', [], 'foo-token', 3);
         $this->assertEquals([
             'video_id' => '1337',
             'success'  => true,
@@ -295,6 +295,6 @@ class FacebookTest extends TestCase
             'http_client' => $client,
         ]);
         $fb = new Facebook($config);
-        $fb->uploadVideo('4', __DIR__.'/foo.txt', [], 'foo-token', 3);
+        $fb->uploadVideo('4', __DIR__ . '/foo.txt', [], 'foo-token', 3);
     }
 }

@@ -43,7 +43,7 @@ class RedirectLoginHelperTest extends TestCase
      */
     protected $redirectLoginHelper;
 
-    const REDIRECT_URL = 'http://invalid.zzz';
+    public const REDIRECT_URL = 'http://invalid.zzz';
 
     protected function setUp(): void
     {
@@ -66,11 +66,11 @@ class RedirectLoginHelperTest extends TestCase
             'client_id'    => '123',
             'redirect_uri' => self::REDIRECT_URL,
             'state'        => $this->persistentDataHandler->get('state'),
-            'sdk'          => 'php-sdk-'.Facebook::VERSION,
+            'sdk'          => 'php-sdk-' . Facebook::VERSION,
             'scope'        => implode(',', $scope),
         ];
         foreach ($params as $key => $value) {
-            $this->assertStringContainsStringIgnoringCase($key.'='.urlencode($value), $loginUrl);
+            $this->assertStringContainsStringIgnoringCase($key . '=' . urlencode($value), $loginUrl);
         }
     }
 
@@ -85,7 +85,7 @@ class RedirectLoginHelperTest extends TestCase
             'access_token' => 'foo_token',
         ];
         foreach ($params as $key => $value) {
-            $this->assertStringContainsStringIgnoringCase($key.'='.urlencode($value), $logoutUrl);
+            $this->assertStringContainsStringIgnoringCase($key . '=' . urlencode($value), $logoutUrl);
         }
     }
 
@@ -97,6 +97,6 @@ class RedirectLoginHelperTest extends TestCase
 
         $accessToken = $this->redirectLoginHelper->getAccessToken(self::REDIRECT_URL);
 
-        $this->assertEquals('foo_token_from_code|foo_code|'.self::REDIRECT_URL, (string) $accessToken);
+        $this->assertEquals('foo_token_from_code|foo_code|' . self::REDIRECT_URL, (string) $accessToken);
     }
 }

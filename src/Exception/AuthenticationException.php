@@ -23,6 +23,4 @@
 
 namespace Facebook\Exception;
 
-class AuthenticationException extends SDKException
-{
-}
+class AuthenticationException extends SDKException {}

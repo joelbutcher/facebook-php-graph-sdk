@@ -33,37 +33,37 @@ class Client
     /**
      * @const string Production Graph API URL.
      */
-    const BASE_GRAPH_URL = 'https://graph.facebook.com';
+    public const BASE_GRAPH_URL = 'https://graph.facebook.com';
 
     /**
      * @const string Graph API URL for video uploads.
      */
-    const BASE_GRAPH_VIDEO_URL = 'https://graph-video.facebook.com';
+    public const BASE_GRAPH_VIDEO_URL = 'https://graph-video.facebook.com';
 
     /**
      * @const string Beta Graph API URL.
      */
-    const BASE_GRAPH_URL_BETA = 'https://graph.beta.facebook.com';
+    public const BASE_GRAPH_URL_BETA = 'https://graph.beta.facebook.com';
 
     /**
      * @const string Beta Graph API URL for video uploads.
      */
-    const BASE_GRAPH_VIDEO_URL_BETA = 'https://graph-video.beta.facebook.com';
+    public const BASE_GRAPH_VIDEO_URL_BETA = 'https://graph-video.beta.facebook.com';
 
     /**
      * @const int The timeout in seconds for a normal request.
      */
-    const DEFAULT_REQUEST_TIMEOUT = 60;
+    public const DEFAULT_REQUEST_TIMEOUT = 60;
 
     /**
      * @const int The timeout in seconds for a request that contains file uploads.
      */
-    const DEFAULT_FILE_UPLOAD_REQUEST_TIMEOUT = 3600;
+    public const DEFAULT_FILE_UPLOAD_REQUEST_TIMEOUT = 3600;
 
     /**
      * @const int The timeout in seconds for a request that contains video uploads.
      */
-    const DEFAULT_VIDEO_UPLOAD_REQUEST_TIMEOUT = 7200;
+    public const DEFAULT_VIDEO_UPLOAD_REQUEST_TIMEOUT = 7200;
 
     /**
      * @var bool toggle to use Graph beta url
@@ -148,13 +148,13 @@ class Client
     public function prepareRequestMessage(Request $request)
     {
         $postToVideoUrl = $request->containsVideoUploads();
-        $url = $this->getBaseGraphUrl($postToVideoUrl).$request->getUrl();
+        $url = $this->getBaseGraphUrl($postToVideoUrl) . $request->getUrl();
 
         // If we're sending files they should be sent as multipart/form-data
         if ($request->containsFileUploads()) {
             $requestBody = $request->getMultipartBody();
             $request->setHeaders([
-                'Content-Type' => 'multipart/form-data; boundary='.$requestBody->getBoundary(),
+                'Content-Type' => 'multipart/form-data; boundary=' . $requestBody->getBoundary(),
             ]);
         } else {
             $requestBody = $request->getUrlEncodedBody();

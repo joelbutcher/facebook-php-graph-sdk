@@ -33,7 +33,7 @@ class FooSignedRequestHelperClient extends Client
     {
         $params = $request->getParams();
         $rawResponse = json_encode([
-            'access_token' => 'foo_access_token_from:'.$params['code'],
+            'access_token' => 'foo_access_token_from:' . $params['code'],
         ]);
 
         return new Response($request, $rawResponse, 200);

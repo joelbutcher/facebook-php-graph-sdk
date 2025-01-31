@@ -58,7 +58,7 @@ class ResumableUploaderTest extends TestCase
         $this->fbApp = new Application('app_id', 'app_secret');
         $this->graphApi = new FakeGraphApiForResumableUpload();
         $this->client = new Client($this->graphApi);
-        $this->file = new File(__DIR__.'/../foo.txt');
+        $this->file = new File(__DIR__ . '/../foo.txt');
     }
 
     public function testResumableUploadCanStartTransferAndFinish()

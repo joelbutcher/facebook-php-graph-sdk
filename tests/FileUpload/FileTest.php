@@ -32,7 +32,7 @@ class FileTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->testFile = __DIR__.'/../foo.txt';
+        $this->testFile = __DIR__ . '/../foo.txt';
     }
 
     public function testCanOpenAndReadAndCloseAFile()

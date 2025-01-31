@@ -23,6 +23,4 @@
 
 namespace Facebook\Exception;
 
-class SDKException extends \Exception
-{
-}
+class SDKException extends \Exception {}

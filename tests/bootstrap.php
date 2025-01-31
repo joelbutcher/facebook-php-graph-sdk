@@ -22,7 +22,7 @@
  */
 date_default_timezone_set('Europe/Paris');
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 // Delete the temp test user after all tests have fired
 register_shutdown_function(function () {

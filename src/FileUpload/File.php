@@ -80,13 +80,13 @@ class File
     public function open()
     {
         if (!$this->isRemoteFile($this->path) && !is_readable($this->path)) {
-            throw new SDKException('Failed to create File entity. Unable to read resource: '.$this->path.'.');
+            throw new SDKException('Failed to create File entity. Unable to read resource: ' . $this->path . '.');
         }
 
         $this->stream = fopen($this->path, 'r');
 
         if (!$this->stream) {
-            throw new SDKException('Failed to create File entity. Unable to open resource: '.$this->path.'.');
+            throw new SDKException('Failed to create File entity. Unable to open resource: ' . $this->path . '.');
         }
     }
 

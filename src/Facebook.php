@@ -46,17 +46,17 @@ class Facebook
     /**
      * @const string Version number of the Facebook PHP SDK.
      */
-    const VERSION = '6.0-dev';
+    public const VERSION = '6.0-dev';
 
     /**
      * @const string The name of the environment variable that contains the app ID.
      */
-    const APP_ID_ENV_NAME = 'FACEBOOK_APP_ID';
+    public const APP_ID_ENV_NAME = 'FACEBOOK_APP_ID';
 
     /**
      * @const string The name of the environment variable that contains the app secret.
      */
-    const APP_SECRET_ENV_NAME = 'FACEBOOK_APP_SECRET';
+    public const APP_SECRET_ENV_NAME = 'FACEBOOK_APP_SECRET';
 
     /**
      * @var Application the Application entity
@@ -118,10 +118,10 @@ class Facebook
         ], $config);
 
         if (!$config['app_id']) {
-            throw new SDKException('Required "app_id" key not supplied in config and could not find fallback environment variable "'.static::APP_ID_ENV_NAME.'"');
+            throw new SDKException('Required "app_id" key not supplied in config and could not find fallback environment variable "' . static::APP_ID_ENV_NAME . '"');
         }
         if (!$config['app_secret']) {
-            throw new SDKException('Required "app_secret" key not supplied in config and could not find fallback environment variable "'.static::APP_SECRET_ENV_NAME.'"');
+            throw new SDKException('Required "app_secret" key not supplied in config and could not find fallback environment variable "' . static::APP_SECRET_ENV_NAME . '"');
         }
         if ($config['http_client'] !== null && !$config['http_client'] instanceof ClientInterface) {
             throw new \InvalidArgumentException('Required "http_client" key to be null or an instance of \Psr\Http\Client\ClientInterface');
@@ -577,7 +577,7 @@ class Facebook
         $graphVersion = $graphVersion ?: $this->defaultGraphVersion;
 
         $uploader = new ResumableUploader($this->app, $this->client, $accessToken, $graphVersion);
-        $endpoint = '/'.$target.'/videos';
+        $endpoint = '/' . $target . '/videos';
         $file = $this->videoToUpload($pathToFile);
         $chunk = $uploader->start($endpoint, $file);
 

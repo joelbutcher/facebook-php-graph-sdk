@@ -48,7 +48,7 @@ class RequestBodyMultipartTest extends TestCase
 
     public function testCanProperlyEncodeFilesAndParams()
     {
-        $file = new File(__DIR__.'/../foo.txt');
+        $file = new File(__DIR__ . '/../foo.txt');
         $message = new RequestBodyMultipart([
             'foo' => 'bar',
         ], [

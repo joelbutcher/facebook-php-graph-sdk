@@ -31,8 +31,8 @@ use PHPUnit\Framework\TestCase;
 
 class PersistentDataFactoryTest extends TestCase
 {
-    const COMMON_NAMESPACE = 'Facebook\PersistentData\\';
-    const COMMON_INTERFACE = PersistentDataInterface::class;
+    public const COMMON_NAMESPACE = 'Facebook\PersistentData\\';
+    public const COMMON_INTERFACE = PersistentDataInterface::class;
 
     /**
      * @param mixed  $handler
@@ -54,14 +54,14 @@ class PersistentDataFactoryTest extends TestCase
     public function persistentDataHandlerProviders()
     {
         $handlers = [
-            ['memory', self::COMMON_NAMESPACE.'InMemoryPersistentDataHandler'],
-            [new InMemoryPersistentDataHandler(), self::COMMON_NAMESPACE.'InMemoryPersistentDataHandler'],
-            [new SessionPersistentDataHandler(false), self::COMMON_NAMESPACE.'SessionPersistentDataHandler'],
+            ['memory', self::COMMON_NAMESPACE . 'InMemoryPersistentDataHandler'],
+            [new InMemoryPersistentDataHandler(), self::COMMON_NAMESPACE . 'InMemoryPersistentDataHandler'],
+            [new SessionPersistentDataHandler(false), self::COMMON_NAMESPACE . 'SessionPersistentDataHandler'],
             [null, self::COMMON_INTERFACE],
         ];
 
         if (session_status() === PHP_SESSION_ACTIVE) {
-            $handlers[] = ['session', self::COMMON_NAMESPACE.'SessionPersistentDataHandler'];
+            $handlers[] = ['session', self::COMMON_NAMESPACE . 'SessionPersistentDataHandler'];
         }
 
         return $handlers;

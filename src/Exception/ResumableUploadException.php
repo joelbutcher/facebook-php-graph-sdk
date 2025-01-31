@@ -23,6 +23,4 @@
 
 namespace Facebook\Exception;
 
-class ResumableUploadException extends SDKException
-{
-}
+class ResumableUploadException extends SDKException {}

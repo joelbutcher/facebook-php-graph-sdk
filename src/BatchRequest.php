@@ -248,7 +248,7 @@ class BatchRequest extends Request implements IteratorAggregate, ArrayAccess
         $compiledHeaders = [];
         $headers = $request->getHeaders();
         foreach ($headers as $name => $value) {
-            $compiledHeaders[] = $name.': '.$value;
+            $compiledHeaders[] = $name . ': ' . $value;
         }
 
         $batch = [

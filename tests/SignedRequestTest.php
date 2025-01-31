@@ -60,7 +60,7 @@ class SignedRequestTest extends TestCase
         $srTwo = new SignedRequest($this->app, $rawSignedRequest);
         $payload = $srTwo->getPayload();
 
-        $expectedRawSignedRequest = $this->rawSignature.'.'.$this->rawPayload;
+        $expectedRawSignedRequest = $this->rawSignature . '.' . $this->rawPayload;
         $this->assertEquals($expectedRawSignedRequest, $rawSignedRequest);
         $this->assertEquals($this->payloadData, $payload);
     }
@@ -92,14 +92,14 @@ class SignedRequestTest extends TestCase
     {
         $this->expectException(\Facebook\Exception\SDKException::class);
 
-        new SignedRequest($this->app, 'foo_sig.'.$this->rawPayload);
+        new SignedRequest($this->app, 'foo_sig.' . $this->rawPayload);
     }
 
     public function testAnImproperlyEncodedPayloadWillThrowAnException()
     {
         $this->expectException(\Facebook\Exception\SDKException::class);
 
-        new SignedRequest($this->app, $this->rawSignature.'.foo_payload');
+        new SignedRequest($this->app, $this->rawSignature . '.foo_payload');
     }
 
     public function testNonApprovedAlgorithmsWillThrowAnException()
@@ -117,7 +117,7 @@ class SignedRequestTest extends TestCase
 
     public function testAsRawSignedRequestCanBeValidatedAndDecoded()
     {
-        $rawSignedRequest = $this->rawSignature.'.'.$this->rawPayload;
+        $rawSignedRequest = $this->rawSignature . '.' . $this->rawPayload;
         $sr = new SignedRequest($this->app, $rawSignedRequest);
 
         $this->assertEquals($this->payloadData, $sr->getPayload());
@@ -125,7 +125,7 @@ class SignedRequestTest extends TestCase
 
     public function testARawSignedRequestCanBeValidatedAndDecoded()
     {
-        $rawSignedRequest = $this->rawSignature.'.'.$this->rawPayload;
+        $rawSignedRequest = $this->rawSignature . '.' . $this->rawPayload;
         $sr = new SignedRequest($this->app, $rawSignedRequest);
 
         $this->assertEquals($sr->getPayload(), $this->payloadData);

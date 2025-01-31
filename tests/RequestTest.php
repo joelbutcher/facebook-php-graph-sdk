@@ -121,7 +121,7 @@ class RequestTest extends TestCase
 
         $getUrl = $getRequest->getUrl();
         $expectedParams = 'foo=bar&access_token=foo_token&appsecret_proof=df4256903ba4e23636cc142117aa632133d75c642bd2a68955be1443bd14deb9';
-        $expectedUrl = '/foo?'.$expectedParams;
+        $expectedUrl = '/foo?' . $expectedParams;
 
         $this->assertEquals($expectedUrl, $getUrl);
 
@@ -152,7 +152,7 @@ class RequestTest extends TestCase
         $url = $request->getUrl();
 
         $expectedParams = 'bar=baz&access_token=foo_token&appsecret_proof=df4256903ba4e23636cc142117aa632133d75c642bd2a68955be1443bd14deb9';
-        $expectedUrl = '/foo?'.$expectedParams;
+        $expectedUrl = '/foo?' . $expectedParams;
         $this->assertEquals($expectedUrl, $url);
 
         $params = $request->getParams();
@@ -167,7 +167,7 @@ class RequestTest extends TestCase
 
     public function testAFileCanBeAddedToParams()
     {
-        $myFile = new File(__DIR__.'/foo.txt');
+        $myFile = new File(__DIR__ . '/foo.txt');
         $params = [
             'name'   => 'Foo Bar',
             'source' => $myFile,
@@ -185,7 +185,7 @@ class RequestTest extends TestCase
 
     public function testAVideoCanBeAddedToParams()
     {
-        $myFile = new Video(__DIR__.'/foo.txt');
+        $myFile = new Video(__DIR__ . '/foo.txt');
         $params = [
             'name'   => 'Foo Bar',
             'source' => $myFile,

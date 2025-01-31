@@ -54,8 +54,8 @@ class SessionPersistentDataHandler implements PersistentDataInterface
      */
     public function get($key)
     {
-        if (isset($_SESSION[$this->sessionPrefix.$key])) {
-            return $_SESSION[$this->sessionPrefix.$key];
+        if (isset($_SESSION[$this->sessionPrefix . $key])) {
+            return $_SESSION[$this->sessionPrefix . $key];
         }
 
         return null;
@@ -66,6 +66,6 @@ class SessionPersistentDataHandler implements PersistentDataInterface
      */
     public function set($key, $value)
     {
-        $_SESSION[$this->sessionPrefix.$key] = $value;
+        $_SESSION[$this->sessionPrefix . $key] = $value;
     }
 }

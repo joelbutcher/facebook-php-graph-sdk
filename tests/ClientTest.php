@@ -150,11 +150,11 @@ class ClientTest extends TestCase
         $fbRequests = [
             new Request($this->fbApp, 'token', 'POST', '/photo', [
                 'message' => 'foobar',
-                'source'  => new File(__DIR__.'/foo.txt'),
+                'source'  => new File(__DIR__ . '/foo.txt'),
             ]),
             new Request($this->fbApp, 'token', 'POST', '/video', [
                 'message' => 'foobar',
-                'source'  => new Video(__DIR__.'/foo.txt'),
+                'source'  => new Video(__DIR__ . '/foo.txt'),
             ]),
         ];
         $fbBatchRequest = new BatchRequest($this->fbApp, $fbRequests);
@@ -184,7 +184,7 @@ class ClientTest extends TestCase
 
     public function testARequestWithFilesWillBeMultipart()
     {
-        $myFile = new File(__DIR__.'/foo.txt');
+        $myFile = new File(__DIR__ . '/foo.txt');
         $fbRequest = new Request($this->fbApp, 'token', 'POST', '/foo', ['file' => $myFile]);
         $response = $this->fbClient->sendRequest($fbRequest);
 
@@ -209,7 +209,7 @@ class ClientTest extends TestCase
         $this->initializeTestApp();
 
         // Create a test user
-        $testUserPath = '/'.TestCredentials::$appId.'/accounts/test-users';
+        $testUserPath = '/' . TestCredentials::$appId . '/accounts/test-users';
         $params = [
             'installed'   => true,
             'name'        => 'Foo Phpunit User',
@@ -247,7 +247,7 @@ class ClientTest extends TestCase
             static::$testApp,
             static::$testApp->getAccessToken(),
             'DELETE',
-            '/'.$testUserId
+            '/' . $testUserId
         );
         $graphNode = static::$testClient->sendRequest($request)->getGraphNode();
 
@@ -256,7 +256,7 @@ class ClientTest extends TestCase
 
     public function initializeTestApp()
     {
-        if (!file_exists(__DIR__.'/TestCredentials.php')) {
+        if (!file_exists(__DIR__ . '/TestCredentials.php')) {
             $this->markTestSkipped('You must create a TestCredentials.php file from TestCredentials.php.dist');
 
             return;

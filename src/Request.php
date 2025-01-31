@@ -510,7 +510,7 @@ class Request
         $graphVersion = UrlManipulator::forceSlashPrefix($this->graphVersion);
         $endpoint = UrlManipulator::forceSlashPrefix($this->getEndpoint());
 
-        $url = $graphVersion.$endpoint;
+        $url = $graphVersion . $endpoint;
 
         if ($this->getMethod() !== 'POST') {
             $params = $this->getParams();
@@ -528,7 +528,7 @@ class Request
     public static function getDefaultHeaders()
     {
         return [
-            'User-Agent'      => 'fb-php-'.Facebook::VERSION,
+            'User-Agent'      => 'fb-php-' . Facebook::VERSION,
             'Accept-Encoding' => '*',
         ];
     }
