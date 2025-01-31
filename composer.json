@@ -12,16 +12,18 @@
         }
     ],
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     },
     "require": {
         "php": "^7.3 || ^8.0",
         "php-http/client-implementation": "^1.0",
         "php-http/discovery": "^1.0",
-        "php-http/httplug": "^2.2.0",
-        "php-http/message": "^1.11.0",
+        "psr/http-client": "^1.0",
         "psr/http-factory": "^1.0",
-        "psr/http-message": "^1.0"
+        "psr/http-message": "^1.0|^2.0"
     },
     "require-dev": {
         "guzzlehttp/psr7": "^2.0",
