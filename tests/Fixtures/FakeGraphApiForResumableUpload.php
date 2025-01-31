@@ -24,11 +24,11 @@
 namespace Facebook\Tests\Fixtures;
 
 use GuzzleHttp\Psr7\Response;
-use Http\Client\HttpClient;
+use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class FakeGraphApiForResumableUpload implements HttpClient
+class FakeGraphApiForResumableUpload implements ClientInterface
 {
     public $transferCount = 0;
     private $respondWith = 'SUCCESS';

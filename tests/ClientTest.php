@@ -36,8 +36,8 @@ use Facebook\Request;
 use Facebook\Response;
 use Facebook\Tests\Fixtures\MyFooBatchHttpClient;
 use Facebook\Tests\Fixtures\MyFooHttpClient;
-use Http\Client\HttpClient;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Client\ClientInterface;
 
 class ClientTest extends TestCase
 {
@@ -71,7 +71,7 @@ class ClientTest extends TestCase
     {
         $handler = new MyFooHttpClient();
         $client = new Client($handler);
-        $httpClient = $client->getHttpClient();
+        $httpClient = $client->getClientInterface();
 
         $this->assertInstanceOf(MyFooHttpClient::class, $httpClient);
     }
@@ -79,9 +79,9 @@ class ClientTest extends TestCase
     public function testTheHttpClientWillFallbackToDefault()
     {
         $client = new Client();
-        $httpClient = $client->getHttpClient();
+        $httpClient = $client->getClientInterface();
 
-        $this->assertInstanceOf(HttpClient::class, $httpClient);
+        $this->assertInstanceOf(ClientInterface::class, $httpClient);
     }
 
     public function testBetaModeCanBeDisabledOrEnabledViaConstructor()
@@ -160,7 +160,7 @@ class ClientTest extends TestCase
         $fbBatchRequest = new BatchRequest($this->fbApp, $fbRequests);
         $fbBatchRequest->prepareRequestsForBatch();
 
-        list($url, $method, $headers, $body) = $this->fbClient->prepareRequestMessage($fbBatchRequest);
+        [$url, $method, $headers, $body] = $this->fbClient->prepareRequestMessage($fbBatchRequest);
 
         $this->assertEquals(Client::BASE_GRAPH_VIDEO_URL, $url);
         $this->assertEquals('POST', $method);

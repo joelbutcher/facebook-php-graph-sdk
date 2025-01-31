@@ -224,7 +224,7 @@ class FacebookTest extends TestCase
 
         $this->assertInstanceOf(
             FooHttpClientInterface::class,
-            $fb->getClient()->getHttpClient()
+            $fb->getClient()->getClientInterface()
         );
         $this->assertInstanceOf(
             FooPersistentDataInterface::class,

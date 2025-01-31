@@ -24,9 +24,9 @@
 namespace Facebook;
 
 use Facebook\Exception\SDKException;
-use Http\Client\HttpClient;
-use Http\Discovery\HttpClientDiscovery;
 use Http\Discovery\Psr17FactoryDiscovery;
+use Http\Discovery\Psr18ClientDiscovery;
+use Psr\Http\Client\ClientInterface;
 
 class Client
 {
@@ -83,21 +83,21 @@ class Client
     /**
      * Instantiates a new Client object.
      *
-     * @param null|HttpClient $httpClient
+     * @param null|ClientInterface $httpClient
      * @param bool            $enableBeta
      */
-    public function __construct(HttpClient $httpClient = null, $enableBeta = false)
+    public function __construct(ClientInterface $httpClient = null, $enableBeta = false)
     {
-        $this->httpClient = $httpClient ?: HttpClientDiscovery::find();
+        $this->httpClient = $httpClient ?: Psr18ClientDiscovery::find();
         $this->enableBetaMode = $enableBeta;
     }
 
     /**
      * Sets the HTTP client handler.
      *
-     * @param HttpClient $httpClient
+     * @param ClientInterface $httpClient
      */
-    public function setHttpClient(HttpClient $httpClient)
+    public function setClientInterface(ClientInterface $httpClient)
     {
         $this->httpClient = $httpClient;
     }
@@ -105,9 +105,9 @@ class Client
     /**
      * Returns the HTTP client handler.
      *
-     * @return HttpClient
+     * @return ClientInterface
      */
-    public function getHttpClient()
+    public function getClientInterface()
     {
         return $this->httpClient;
     }
@@ -186,11 +186,17 @@ class Client
             $request->validateAccessToken();
         }
 
-        list($url, $method, $headers, $body) = $this->prepareRequestMessage($request);
+        [$url, $method, $headers, $body] = $this->prepareRequestMessage($request);
 
-        $psr7Response = $this->httpClient->sendRequest(
-            Psr17FactoryDiscovery::findRequestFactory()->createRequest($method, $url, $headers, $body)
-        );
+        $psrRequest = Psr17FactoryDiscovery::findRequestFactory()->createRequest($method, $url, $headers, $body)
+            ->withBody(Psr17FactoryDiscovery::findStreamFactory()->createStream($body));
+
+        foreach ($headers as $headerKey => $headerValue) {
+            $psrRequest->withHeader($headerKey, $headerValue);
+        }
+
+
+        $psr7Response = $this->httpClient->sendRequest($psrRequest);
 
         static::$requestCount++;
 

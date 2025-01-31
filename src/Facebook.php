@@ -39,7 +39,7 @@ use Facebook\PersistentData\PersistentDataFactory;
 use Facebook\PersistentData\PersistentDataInterface;
 use Facebook\Url\UrlDetectionHandler;
 use Facebook\Url\UrlDetectionInterface;
-use Http\Client\HttpClient;
+use Psr\Http\Client\ClientInterface;
 
 class Facebook
 {
@@ -123,7 +123,7 @@ class Facebook
         if (!$config['app_secret']) {
             throw new SDKException('Required "app_secret" key not supplied in config and could not find fallback environment variable "'.static::APP_SECRET_ENV_NAME.'"');
         }
-        if ($config['http_client'] !== null && !$config['http_client'] instanceof HttpClient) {
+        if ($config['http_client'] !== null && !$config['http_client'] instanceof ClientInterface) {
             throw new \InvalidArgumentException('Required "http_client" key to be null or an instance of \Http\Client\HttpClient');
         }
         if (!$config['default_graph_version']) {
