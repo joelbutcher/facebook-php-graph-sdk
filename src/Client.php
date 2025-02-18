@@ -188,14 +188,13 @@ class Client
 
         [$url, $method, $headers, $body] = $this->prepareRequestMessage($request);
 
-        $psrRequest = Psr17FactoryDiscovery::findRequestFactory()->createRequest($method, $url, $headers, $body)
+        $psrRequest = Psr17FactoryDiscovery::findRequestFactory()->createRequest($method, $url)
             ->withBody(Psr17FactoryDiscovery::findStreamFactory()->createStream($body));
 
         foreach ($headers as $headerKey => $headerValue) {
-            $psrRequest->withHeader($headerKey, $headerValue);
+            $psrRequest = $psrRequest->withHeader($headerKey, $headerValue);
         }
-
-
+		
         $psr7Response = $this->httpClient->sendRequest($psrRequest);
 
         static::$requestCount++;
