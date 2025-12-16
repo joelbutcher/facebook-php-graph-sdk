@@ -25,6 +25,8 @@ declare(strict_types=1);
 
 namespace Facebook\FileUpload;
 
+use Psl\Dict;
+
 use Facebook\Application;
 use Facebook\Authentication\AccessToken;
 use Facebook\Client;
@@ -116,7 +118,7 @@ class ResumableUploader
      */
     public function finish($endpoint, $uploadSessionId, $metadata = [])
     {
-        $params = array_merge($metadata, [
+        $params = Dict\merge($metadata, [
             'upload_phase'      => 'finish',
             'upload_session_id' => $uploadSessionId,
         ]);

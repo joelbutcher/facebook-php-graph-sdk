@@ -25,6 +25,9 @@ declare(strict_types=1);
 
 namespace Facebook\GraphNode;
 
+use Psl\Iter;
+use Psl\Str;
+
 use DateTime;
 
 /**
@@ -49,10 +52,10 @@ class Birthday extends DateTime
      */
     public function __construct($date)
     {
-        $parts = explode('/', $date);
+        $parts = Str\split($date, '/');
 
-        $this->hasYear = count($parts) === 3 || count($parts) === 1;
-        $this->hasDate = count($parts) === 3 || count($parts) === 2;
+        $this->hasYear = Iter\count($parts) === 3 || Iter\count($parts) === 1;
+        $this->hasDate = Iter\count($parts) === 3 || Iter\count($parts) === 2;
 
         parent::__construct($date);
     }

@@ -25,6 +25,9 @@ declare(strict_types=1);
 
 namespace Facebook\GraphNode;
 
+use Psl\Iter;
+use Psl\Vec;
+
 use Facebook\Exception\SDKException;
 use Facebook\Response;
 
@@ -351,7 +354,7 @@ class GraphNodeFactory
         }
 
         // Checks for a sequential numeric array which would be a GraphEdge
-        return array_keys($data) === range(0, count($data) - 1);
+        return array_keys($data) === Vec\range(0, Iter\count($data) - 1);
     }
 
     /**

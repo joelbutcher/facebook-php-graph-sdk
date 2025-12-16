@@ -28,6 +28,7 @@ namespace Facebook\GraphNode;
 use Facebook\Exception\SDKException;
 use Facebook\Request;
 use Facebook\Url\UrlManipulator;
+use Psl\Iter;
 
 class GraphEdge implements \ArrayAccess, \Countable, \IteratorAggregate, \Stringable
 {
@@ -122,7 +123,7 @@ class GraphEdge implements \ArrayAccess, \Countable, \IteratorAggregate, \String
      */
     public function count()
     {
-        return count($this->items);
+        return Iter\count($this->items);
     }
 
     /**
