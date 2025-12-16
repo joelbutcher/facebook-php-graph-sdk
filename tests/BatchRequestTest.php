@@ -210,9 +210,9 @@ class BatchRequestTest extends TestCase
         $this->assertEquals($expectedArray, $batchRequestArray);
     }
 
-    public function requestsAndExpectedResponsesProvider(): array
+    public static function requestsAndExpectedResponsesProvider(): array
     {
-        $headers = $this->defaultHeaders();
+        $headers = self::defaultHeaders();
 
         return [
             [
@@ -382,7 +382,7 @@ class BatchRequestTest extends TestCase
     /**
      * @return non-falsy-string[]
      */
-    private function defaultHeaders(): array
+    private static function defaultHeaders(): array
     {
         $headers = [];
         foreach (Request::getDefaultHeaders() as $name => $value) {
