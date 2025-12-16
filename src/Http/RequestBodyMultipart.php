@@ -25,6 +25,8 @@ declare(strict_types=1);
 
 namespace Facebook\Http;
 
+use Psl\Str;
+
 use Facebook\FileUpload\File;
 
 /**
@@ -92,7 +94,7 @@ class RequestBodyMultipart implements RequestBodyInterface
      */
     private function getFileString($name, File $file): string
     {
-        return sprintf(
+        return Str\format(
             "--%s\r\nContent-Disposition: form-data; name=\"%s\"; filename=\"%s\"%s\r\n\r\n%s\r\n",
             $this->boundary,
             $name,
@@ -110,7 +112,7 @@ class RequestBodyMultipart implements RequestBodyInterface
      */
     private function getParamString($name, $value): string
     {
-        return sprintf(
+        return Str\format(
             "--%s\r\nContent-Disposition: form-data; name=\"%s\"\r\n\r\n%s\r\n",
             $this->boundary,
             $name,
@@ -126,11 +128,11 @@ class RequestBodyMultipart implements RequestBodyInterface
     private function getNestedParams(array $params): array
     {
         $query = http_build_query($params, '', '&');
-        $params = explode('&', $query);
+        $params = Str\split($query, '&');
         $result = [];
 
         foreach ($params as $param) {
-            [$key, $value] = explode('=', $param, 2);
+            [$key, $value] = Str\split($param, '=', 2);
             $result[urldecode($key)] = urldecode($value);
         }
 

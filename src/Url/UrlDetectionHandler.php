@@ -25,6 +25,9 @@ declare(strict_types=1);
 
 namespace Facebook\Url;
 
+use Psl\Iter;
+use Psl\Str;
+
 class UrlDetectionHandler implements UrlDetectionInterface
 {
     /**
@@ -88,8 +91,8 @@ class UrlDetectionHandler implements UrlDetectionInterface
         // Check for proxy first
         $header = $this->getHeader('X_FORWARDED_HOST');
         if ($header && $this->isValidForwardedHost($header)) {
-            $elements = explode(',', $header);
-            $host = $elements[count($elements) - 1];
+            $elements = Str\split($header, ',');
+            $host = $elements[Iter\count($elements) - 1];
         } elseif (!$host = $this->getHeader('HOST')) {
             if (!$host = $this->getServerVar('SERVER_NAME')) {
                 $host = $this->getServerVar('SERVER_ADDR');

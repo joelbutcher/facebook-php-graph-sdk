@@ -25,6 +25,10 @@ declare(strict_types=1);
 
 namespace Facebook\Url;
 
+use Psl\Dict;
+use Psl\Iter;
+use Psl\Str;
+
 class UrlManipulator
 {
     /**
@@ -52,7 +56,7 @@ class UrlManipulator
                 unset($params[$paramName]);
             }
 
-            if (count($params) > 0) {
+            if (Iter\count($params) > 0) {
                 $query = '?'.http_build_query($params, '', '&');
             }
         }
@@ -82,12 +86,12 @@ class UrlManipulator
             return $url.'?'.http_build_query($newParams, '', '&');
         }
 
-        [$path, $query] = explode('?', $url, 2);
+        [$path, $query] = Str\split($url, '?', 2);
         $existingParams = [];
         parse_str($query, $existingParams);
 
         // Favor params from the original URL over $newParams
-        $newParams = array_merge($newParams, $existingParams);
+        $newParams = Dict\merge($newParams, $existingParams);
 
         // Sort for a predicable order
         ksort($newParams);
