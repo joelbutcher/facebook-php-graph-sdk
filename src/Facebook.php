@@ -69,9 +69,9 @@ class Facebook
     protected \Facebook\Application $app;
 
     /**
-     * @var Client the Facebook client service
+     * @var \Facebook\Http\ClientInterface the Facebook client service
      */
-    protected \Facebook\Client $client;
+    protected \Facebook\Http\ClientInterface $client;
 
     /**
      * @var OAuth2Client The OAuth 2.0 client service.
@@ -135,10 +135,11 @@ class Facebook
         }
 
         $this->app = new Application($config['app_id'], $config['app_secret']);
-        $this->client = new Client(
-            $config['http_client'],
-            $config['enable_beta_mode']
-        );
+        if ($config['http_client'] instanceof \Facebook\Http\ClientInterface) {
+            $this->client = $config['http_client'];
+        } else {
+            $this->client = new Client($config['http_client'], $config['enable_beta_mode']);
+        }
         $this->setUrlDetectionHandler($config['url_detection_handler'] ?: new UrlDetectionHandler());
         $this->persistentDataHandler = PersistentDataFactory::createPersistentDataHandler(
             $config['persistent_data_handler']

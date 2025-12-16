@@ -26,12 +26,13 @@ declare(strict_types=1);
 namespace Facebook;
 
 use Facebook\Exception\SDKException;
+use Facebook\Http\ClientInterface as HttpClientInterface;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Http\Discovery\Psr18ClientDiscovery;
 use Psl\Str;
 use Psr\Http\Client\ClientInterface;
 
-class Client
+class Client implements HttpClientInterface
 {
     /**
      * @const string Production Graph API URL.
