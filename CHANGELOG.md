@@ -3,6 +3,22 @@
 Starting with version 5, the Facebook PHP SDK follows [SemVer](http://semver.org/).
 
 
+## 8.x
+
+- **BREAKING**: Requires PHP 8.4+
+- **BREAKING**: Upgraded to PHPUnit 12.x
+- Migrated from native PHP functions to PSL (PHP Standard Library) functions
+- Added strict types to all production files
+- Removed deprecated `Serializable` interface
+- Extracted `ClientInterface` for better customizability
+- Added Rector for automated code quality improvements
+- Added PHPStan for static analysis
+- Removed StyleCI (replaced with PHPStan)
+- Enhanced type system with return types and parameter types throughout
+- Improved SOLID principles adherence with interface-based design
+- Added comprehensive AGENTS.md for AI coding assistant support
+- Added GitHub Actions CI/CD workflow
+
 ## 6.x
 
 - Migrated automated tests from Travis CI to Github Actions (#01d6a41)

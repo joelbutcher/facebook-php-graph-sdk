@@ -51,7 +51,7 @@ class Facebook
     /**
      * @const string Version number of the Facebook PHP SDK.
      */
-    const VERSION = '6.0-dev';
+    const VERSION = '8.0-dev';
 
     /**
      * @const string The name of the environment variable that contains the app ID.
