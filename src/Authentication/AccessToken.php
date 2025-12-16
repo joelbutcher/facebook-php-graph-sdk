@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2017 Facebook, Inc.
  *
@@ -132,7 +134,7 @@ class AccessToken implements \Stringable
     protected function setExpiresAtFromTimeStamp($timeStamp)
     {
         $dt = new \DateTime();
-        $dt->setTimestamp($timeStamp);
+        $dt->setTimestamp((int) $timeStamp);
         $this->expiresAt = $dt;
     }
 }

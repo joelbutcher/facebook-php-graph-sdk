@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2017 Facebook, Inc.
  *
@@ -35,6 +37,9 @@ class UrlManipulator
      */
     public static function removeParamsFromUrl($url, array $paramsToFilter): string
     {
+        if ($url === null) {
+            return '';
+        }
         $parts = parse_url($url);
 
         $query = '';
@@ -93,10 +98,13 @@ class UrlManipulator
     /**
      * Returns the params from a URL in the form of an array.
      *
-     * @param string $url the URL to parse the params from
+     * @param string|null $url the URL to parse the params from
      */
     public static function getParamsAsArray($url): array
     {
+        if ($url === null) {
+            return [];
+        }
         $query = parse_url($url, PHP_URL_QUERY);
         if (!$query) {
             return [];
@@ -119,6 +127,9 @@ class UrlManipulator
      */
     public static function mergeUrlParams($urlToStealFrom, $urlToAddTo)
     {
+        if ($urlToStealFrom === null || $urlToAddTo === null) {
+            return $urlToAddTo ?? '';
+        }
         $newParams = static::getParamsAsArray($urlToStealFrom);
         // Nothing new to add, return as-is
         if (!$newParams) {

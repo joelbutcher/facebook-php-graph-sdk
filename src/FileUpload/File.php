@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2017 Facebook, Inc.
  *
@@ -89,7 +91,7 @@ class File
      */
     public function getContents(): string|false
     {
-        return stream_get_contents($this->stream, $this->maxLength, $this->offset);
+        return stream_get_contents($this->stream, $this->maxLength, (int) $this->offset);
     }
 
     /**

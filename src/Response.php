@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2017 Facebook, Inc.
  *
@@ -203,11 +205,12 @@ class Response
      */
     public function decodeBody(): void
     {
-        $this->decodedBody = json_decode($this->body, true);
+        $bodyString = is_string($this->body) ? $this->body : (string) $this->body;
+        $this->decodedBody = json_decode($bodyString, true);
 
         if ($this->decodedBody === null) {
             $this->decodedBody = [];
-            parse_str($this->body, $this->decodedBody);
+            parse_str($bodyString, $this->decodedBody);
         } elseif (is_bool($this->decodedBody)) {
             // Backwards compatibility for Graph < 2.1.
             // Mimics 2.1 responses.
