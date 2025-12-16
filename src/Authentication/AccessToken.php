@@ -23,15 +23,8 @@
 
 namespace Facebook\Authentication;
 
-class AccessToken
+class AccessToken implements \Stringable
 {
-    /**
-     * The access token value.
-     *
-     * @var string
-     */
-    protected $value = '';
-
     /**
      * Date when token expires.
      *
@@ -42,12 +35,14 @@ class AccessToken
     /**
      * Create a new access token entity.
      *
-     * @param string $accessToken
+     * @param string $value
      * @param int    $expiresAt
      */
-    public function __construct($accessToken, $expiresAt = 0)
+    public function __construct(/**
+     * The access token value.
+     */
+    protected $value, $expiresAt = 0)
     {
-        $this->value = $accessToken;
         if ($expiresAt) {
             $this->setExpiresAtFromTimeStamp($expiresAt);
         }
@@ -57,10 +52,8 @@ class AccessToken
      * Generate an app secret proof to sign a request to Graph.
      *
      * @param string $appSecret the app secret
-     *
-     * @return string
      */
-    public function getAppSecretProof($appSecret)
+    public function getAppSecretProof($appSecret): string
     {
         return hash_hmac('sha256', $this->value, $appSecret);
     }
@@ -77,12 +70,10 @@ class AccessToken
 
     /**
      * Determines whether or not this is an app access token.
-     *
-     * @return bool
      */
-    public function isAppAccessToken()
+    public function isAppAccessToken(): bool
     {
-        return strpos($this->value, '|') !== false;
+        return str_contains($this->value, '|');
     }
 
     /**
@@ -101,10 +92,8 @@ class AccessToken
 
     /**
      * Checks the expiration of the access token.
-     *
-     * @return null|bool
      */
-    public function isExpired()
+    public function isExpired(): ?bool
     {
         if ($this->getExpiresAt() instanceof \DateTime) {
             return $this->getExpiresAt()->getTimestamp() < time();
@@ -129,10 +118,8 @@ class AccessToken
 
     /**
      * Returns the access token as a string.
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getValue();
     }

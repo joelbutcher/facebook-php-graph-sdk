@@ -45,11 +45,10 @@ class BatchRequest extends Request implements IteratorAggregate, ArrayAccess
      * Creates a new Request entity.
      *
      * @param null|Application        $app
-     * @param array                   $requests
      * @param null|AccessToken|string $accessToken
      * @param null|string             $graphVersion
      */
-    public function __construct(Application $app = null, array $requests = [], $accessToken = null, $graphVersion = null)
+    public function __construct(?Application $app = null, array $requests = [], $accessToken = null, $graphVersion = null)
     {
         parent::__construct($app, $accessToken, 'POST', '', [], null, $graphVersion);
 
@@ -64,11 +63,8 @@ class BatchRequest extends Request implements IteratorAggregate, ArrayAccess
      *                                   If a string is given, it is the value of the 'name' option.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return BatchRequest
-     * @return BatchRequest
      */
-    public function add($request, $options = null)
+    public function add($request, $options = null): static
     {
         if (is_array($request)) {
             foreach ($request as $key => $req) {
@@ -112,11 +108,10 @@ class BatchRequest extends Request implements IteratorAggregate, ArrayAccess
     /**
      * Ensures that the Application and access token fall back when missing.
      *
-     * @param Request $request
      *
      * @throws SDKException
      */
-    public function addFallbackDefaults(Request $request)
+    public function addFallbackDefaults(Request $request): void
     {
         if (!$request->getApplication()) {
             $app = $this->getApplication();
@@ -138,13 +133,11 @@ class BatchRequest extends Request implements IteratorAggregate, ArrayAccess
     /**
      * Extracts the files from a request.
      *
-     * @param Request $request
      *
      * @throws SDKException
      *
-     * @return null|string
      */
-    public function extractFileAttachments(Request $request)
+    public function extractFileAttachments(Request $request): ?string
     {
         if (!$request->containsFileUploads()) {
             return null;
@@ -177,7 +170,7 @@ class BatchRequest extends Request implements IteratorAggregate, ArrayAccess
     /**
      * Prepares the requests to be sent as a batch request.
      */
-    public function prepareRequestsForBatch()
+    public function prepareRequestsForBatch(): void
     {
         $this->validateBatchRequestCount();
 
@@ -216,7 +209,7 @@ class BatchRequest extends Request implements IteratorAggregate, ArrayAccess
      *
      * @throws SDKException
      */
-    public function validateBatchRequestCount()
+    public function validateBatchRequestCount(): void
     {
         $batchCount = count($this->requests);
         if ($batchCount === 0) {
@@ -234,10 +227,8 @@ class BatchRequest extends Request implements IteratorAggregate, ArrayAccess
      * @param null|array|string $options       Array of batch request options e.g. 'name', 'omit_response_on_success'.
      *                                         If a string is given, it is the value of the 'name' option.
      * @param null|string       $attachedFiles names of files associated with the request
-     *
-     * @return array
      */
-    public function requestEntityToBatchArray(Request $request, $options = null, $attachedFiles = null)
+    public function requestEntityToBatchArray(Request $request, $options = null, $attachedFiles = null): array
     {
         if (null === $options) {
             $options = [];
@@ -286,7 +277,7 @@ class BatchRequest extends Request implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritdoc}
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->add($value, $offset);
     }
@@ -302,7 +293,7 @@ class BatchRequest extends Request implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritdoc}
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->requests[$offset]);
     }

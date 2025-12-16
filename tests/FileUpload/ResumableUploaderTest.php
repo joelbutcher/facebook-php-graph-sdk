@@ -33,25 +33,13 @@ use PHPUnit\Framework\TestCase;
 
 class ResumableUploaderTest extends TestCase
 {
-    /**
-     * @var Application
-     */
-    private $fbApp;
+    private \Facebook\Application $fbApp;
 
-    /**
-     * @var Client
-     */
-    private $client;
+    private \Facebook\Client $client;
 
-    /**
-     * @var FakeGraphApiForResumableUpload
-     */
-    private $graphApi;
+    private \Facebook\Tests\Fixtures\FakeGraphApiForResumableUpload $graphApi;
 
-    /**
-     * @var File
-     */
-    private $file;
+    private \Facebook\FileUpload\File $file;
 
     protected function setUp(): void
     {
@@ -61,7 +49,7 @@ class ResumableUploaderTest extends TestCase
         $this->file = new File(__DIR__.'/../foo.txt');
     }
 
-    public function testResumableUploadCanStartTransferAndFinish()
+    public function testResumableUploadCanStartTransferAndFinish(): void
     {
         $uploader = new ResumableUploader($this->fbApp, $this->client, 'access_token', 'v2.4');
         $endpoint = '/me/videos';
@@ -78,7 +66,7 @@ class ResumableUploaderTest extends TestCase
         $this->assertTrue($finalResponse);
     }
 
-    public function testStartWillLetErrorResponsesThrow()
+    public function testStartWillLetErrorResponsesThrow(): void
     {
         $this->graphApi->failOnStart();
         $uploader = new ResumableUploader($this->fbApp, $this->client, 'access_token', 'v2.4');
@@ -88,7 +76,7 @@ class ResumableUploaderTest extends TestCase
         $uploader->start('/me/videos', $this->file);
     }
 
-    public function testFailedResumableTransferWillNotThrowAndReturnSameChunk()
+    public function testFailedResumableTransferWillNotThrowAndReturnSameChunk(): void
     {
         $this->graphApi->failOnTransfer();
         $uploader = new ResumableUploader($this->fbApp, $this->client, 'access_token', 'v2.4');

@@ -37,14 +37,9 @@ abstract class SignedRequestFromInputHelper
     protected $signedRequest;
 
     /**
-     * @var Application the Application entity
-     */
-    protected $app;
-
-    /**
      * @var OAuth2Client The OAuth 2.0 client service.
      */
-    protected $oAuth2Client;
+    protected \Facebook\Authentication\OAuth2Client $oAuth2Client;
 
     /**
      * Initialize the helper and process available signed request data.
@@ -53,9 +48,8 @@ abstract class SignedRequestFromInputHelper
      * @param Client      $client       the client to make HTTP requests
      * @param string      $graphVersion the version of Graph to use
      */
-    public function __construct(Application $app, Client $client, $graphVersion)
+    public function __construct(protected \Facebook\Application $app, Client $client, $graphVersion)
     {
-        $this->app = $app;
         $this->oAuth2Client = new OAuth2Client($this->app, $client, $graphVersion);
 
         $this->instantiateSignedRequest();
@@ -67,7 +61,7 @@ abstract class SignedRequestFromInputHelper
      * @param null|string
      * @param null|mixed $rawSignedRequest
      */
-    public function instantiateSignedRequest($rawSignedRequest = null)
+    public function instantiateSignedRequest($rawSignedRequest = null): void
     {
         $rawSignedRequest = $rawSignedRequest ?: $this->getRawSignedRequest();
 
@@ -137,11 +131,7 @@ abstract class SignedRequestFromInputHelper
      */
     public function getRawSignedRequestFromPost()
     {
-        if (isset($_POST['signed_request'])) {
-            return $_POST['signed_request'];
-        }
-
-        return null;
+        return $_POST['signed_request'] ?? null;
     }
 
     /**
@@ -151,10 +141,6 @@ abstract class SignedRequestFromInputHelper
      */
     public function getRawSignedRequestFromCookie()
     {
-        if (isset($_COOKIE['fbsr_'.$this->app->getId()])) {
-            return $_COOKIE['fbsr_'.$this->app->getId()];
-        }
-
-        return null;
+        return $_COOKIE['fbsr_'.$this->app->getId()] ?? null;
     }
 }

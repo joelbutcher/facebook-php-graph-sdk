@@ -54,7 +54,7 @@ class OAuth2ClientTest extends TestCase
         $this->oauth = new OAuth2Client($app, $this->client, static::TESTING_GRAPH_VERSION);
     }
 
-    public function testCanGetMetadataFromAnAccessToken()
+    public function testCanGetMetadataFromAnAccessToken(): void
     {
         $this->client->setMetadataResponse();
 
@@ -76,7 +76,7 @@ class OAuth2ClientTest extends TestCase
         $this->assertEquals(static::TESTING_GRAPH_VERSION, $request->getGraphVersion());
     }
 
-    public function testCanBuildAuthorizationUrl()
+    public function testCanBuildAuthorizationUrl(): void
     {
         $scope = ['email', 'base_foo'];
         $authUrl = $this->oauth->getAuthorizationUrl('https://foo.bar', 'foo_state', $scope, ['foo' => 'bar'], '*');
@@ -99,7 +99,7 @@ class OAuth2ClientTest extends TestCase
         }
     }
 
-    public function testCanGetAccessTokenFromCode()
+    public function testCanGetAccessTokenFromCode(): void
     {
         $this->client->setAccessTokenResponse();
 
@@ -124,7 +124,7 @@ class OAuth2ClientTest extends TestCase
         $this->assertEquals(static::TESTING_GRAPH_VERSION, $request->getGraphVersion());
     }
 
-    public function testCanGetLongLivedAccessToken()
+    public function testCanGetLongLivedAccessToken(): void
     {
         $this->client->setAccessTokenResponse();
 
@@ -145,7 +145,7 @@ class OAuth2ClientTest extends TestCase
         $this->assertEquals($expectedParams, $request->getParams());
     }
 
-    public function testCanGetCodeFromLongLivedAccessToken()
+    public function testCanGetCodeFromLongLivedAccessToken(): void
     {
         $this->client->setCodeResponse();
 

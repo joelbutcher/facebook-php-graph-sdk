@@ -47,11 +47,6 @@ class GraphNodeFactory
     const BASE_GRAPH_OBJECT_PREFIX = '\Facebook\GraphNode\\';
 
     /**
-     * @var Response the response entity from Graph
-     */
-    protected $response;
-
-    /**
      * @var array the decoded body of the Response entity from Graph
      */
     protected $decodedBody;
@@ -61,10 +56,9 @@ class GraphNodeFactory
      *
      * @param Response $response the response entity from Graph
      */
-    public function __construct(Response $response)
+    public function __construct(protected \Facebook\Response $response)
     {
-        $this->response = $response;
-        $this->decodedBody = $response->getDecodedBody();
+        $this->decodedBody = $this->response->getDecodedBody();
     }
 
     /**
@@ -195,7 +189,7 @@ class GraphNodeFactory
      *
      * @throws SDKException
      */
-    public function validateResponseAsArray()
+    public function validateResponseAsArray(): void
     {
         if (!is_array($this->decodedBody)) {
             throw new SDKException('Unable to get response from Graph as array.', 620);
@@ -207,7 +201,7 @@ class GraphNodeFactory
      *
      * @throws SDKException
      */
-    public function validateResponseCastableAsGraphNode()
+    public function validateResponseCastableAsGraphNode(): void
     {
         if (isset($this->decodedBody['data']) && static::isCastableAsGraphEdge($this->decodedBody['data'])) {
             throw new SDKException(
@@ -222,7 +216,7 @@ class GraphNodeFactory
      *
      * @throws SDKException
      */
-    public function validateResponseCastableAsGraphEdge()
+    public function validateResponseCastableAsGraphEdge(): void
     {
         if (!(isset($this->decodedBody['data']) && static::isCastableAsGraphEdge($this->decodedBody['data']))) {
             throw new SDKException(
@@ -334,10 +328,8 @@ class GraphNodeFactory
      * Get the meta data from a list in a Graph response.
      *
      * @param array $data the Graph response
-     *
-     * @return array
      */
-    public function getMetaData(array $data)
+    public function getMetaData(array $data): array
     {
         unset($data['data']);
 
@@ -347,7 +339,6 @@ class GraphNodeFactory
     /**
      * Determines whether or not the data should be cast as a GraphEdge.
      *
-     * @param array $data
      *
      * @return bool
      */
@@ -368,7 +359,7 @@ class GraphNodeFactory
      *
      * @throws SDKException
      */
-    public static function validateSubclass($subclassName)
+    public static function validateSubclass(string $subclassName): void
     {
         if ($subclassName == static::BASE_GRAPH_NODE_CLASS || is_subclass_of($subclassName, static::BASE_GRAPH_NODE_CLASS)) {
             return;

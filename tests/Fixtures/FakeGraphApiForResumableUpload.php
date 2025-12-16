@@ -31,14 +31,14 @@ use Psr\Http\Message\ResponseInterface;
 class FakeGraphApiForResumableUpload implements ClientInterface
 {
     public $transferCount = 0;
-    private $respondWith = 'SUCCESS';
+    private string $respondWith = 'SUCCESS';
 
-    public function failOnStart()
+    public function failOnStart(): void
     {
         $this->respondWith = 'FAIL_ON_START';
     }
 
-    public function failOnTransfer()
+    public function failOnTransfer(): void
     {
         $this->respondWith = 'FAIL_ON_TRANSFER';
     }
@@ -47,16 +47,16 @@ class FakeGraphApiForResumableUpload implements ClientInterface
     {
         $body = $request->getBody()->__toString();
         // Could be start, transfer or finish
-        if (strpos($body, 'transfer') !== false) {
+        if (str_contains($body, 'transfer')) {
             return $this->respondTransfer();
-        } elseif (strpos($body, 'finish') !== false) {
+        } elseif (str_contains($body, 'finish')) {
             return $this->respondFinish();
         }
 
         return $this->respondStart();
     }
 
-    private function respondStart()
+    private function respondStart(): \GuzzleHttp\Psr7\Response
     {
         if ($this->respondWith == 'FAIL_ON_START') {
             return new Response(
@@ -75,7 +75,7 @@ class FakeGraphApiForResumableUpload implements ClientInterface
         );
     }
 
-    private function respondTransfer()
+    private function respondTransfer(): \GuzzleHttp\Psr7\Response
     {
         if ($this->respondWith == 'FAIL_ON_TRANSFER') {
             return new Response(
@@ -86,24 +86,18 @@ class FakeGraphApiForResumableUpload implements ClientInterface
             );
         }
 
-        switch ($this->transferCount) {
-            case 0:
-                $data = ['start_offset' => 20, 'end_offset' => 40];
-                break;
-            case 1:
-                $data = ['start_offset' => 40, 'end_offset' => 50];
-                break;
-            default:
-                $data = ['start_offset' => 50, 'end_offset' => 50];
-                break;
-        }
+        $data = match ($this->transferCount) {
+            0 => ['start_offset' => 20, 'end_offset' => 40],
+            1 => ['start_offset' => 40, 'end_offset' => 50],
+            default => ['start_offset' => 50, 'end_offset' => 50],
+        };
 
         $this->transferCount++;
 
         return new Response(200, ['Foo' => 'Bar'], json_encode($data));
     }
 
-    private function respondFinish()
+    private function respondFinish(): \GuzzleHttp\Psr7\Response
     {
         return new Response(500, ['Foo' => 'Bar'], '{"success":true}');
     }

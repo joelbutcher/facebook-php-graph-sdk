@@ -42,7 +42,7 @@ class GraphPageTest extends TestCase
         $this->responseMock = \Mockery::mock(Response::class);
     }
 
-    public function testPagePropertiesReturnGraphPageObjects()
+    public function testPagePropertiesReturnGraphPageObjects(): void
     {
         $dataFromGraph = [
             'id'        => '123',
@@ -68,7 +68,7 @@ class GraphPageTest extends TestCase
         $this->assertInstanceOf(GraphPage::class, $globalBrandParentPage);
     }
 
-    public function testLocationPropertyWillGetCastAsGraphLocationObject()
+    public function testLocationPropertyWillGetCastAsGraphLocationObject(): void
     {
         $dataFromGraph = [
             'id'       => '123',

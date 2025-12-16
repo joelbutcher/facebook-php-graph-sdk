@@ -28,11 +28,6 @@ use Facebook\Response;
 class ResponseException extends SDKException
 {
     /**
-     * @var Response the response that threw the exception
-     */
-    protected $response;
-
-    /**
      * @var array decoded response
      */
     protected $responseData;
@@ -43,10 +38,9 @@ class ResponseException extends SDKException
      * @param Response     $response          the response that threw the exception
      * @param SDKException $previousException the more detailed exception
      */
-    public function __construct(Response $response, SDKException $previousException = null)
+    public function __construct(protected \Facebook\Response $response, ?SDKException $previousException = null)
     {
-        $this->response = $response;
-        $this->responseData = $response->getDecodedBody();
+        $this->responseData = $this->response->getDecodedBody();
 
         $errorMessage = $this->get('message', 'Unknown error from Graph.');
         $errorCode = $this->get('code', -1);
@@ -58,10 +52,8 @@ class ResponseException extends SDKException
      * A factory for creating the appropriate exception based on the response from Graph.
      *
      * @param Response $response the response that threw the exception
-     *
-     * @return ResponseException
      */
-    public static function create(Response $response)
+    public static function create(Response $response): static
     {
         $data = $response->getDecodedBody();
 
@@ -135,18 +127,12 @@ class ResponseException extends SDKException
     /**
      * Checks isset and returns that or a default value.
      *
-     * @param string $key
      * @param mixed  $default
-     *
      * @return mixed
      */
-    private function get($key, $default = null)
+    private function get(string $key, $default = null)
     {
-        if (isset($this->responseData['error'][$key])) {
-            return $this->responseData['error'][$key];
-        }
-
-        return $default;
+        return $this->responseData['error'][$key] ?? $default;
     }
 
     /**

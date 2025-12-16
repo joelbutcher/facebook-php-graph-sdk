@@ -38,10 +38,8 @@ class PersistentDataFactory
      * @param null|PersistentDataInterface|string $handler
      *
      * @throws InvalidArgumentException if the persistent data handler isn't "session", "memory", or an instance of Facebook\PersistentData\PersistentDataInterface
-     *
-     * @return PersistentDataInterface
      */
-    public static function createPersistentDataHandler($handler)
+    public static function createPersistentDataHandler($handler): \Facebook\PersistentData\SessionPersistentDataHandler|\Facebook\PersistentData\InMemoryPersistentDataHandler|\Facebook\PersistentData\PersistentDataInterface
     {
         if (!$handler) {
             return session_status() === PHP_SESSION_ACTIVE

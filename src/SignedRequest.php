@@ -28,11 +28,6 @@ use Facebook\Exception\SDKException;
 class SignedRequest
 {
     /**
-     * @var Application the Application entity
-     */
-    protected $app;
-
-    /**
      * @var string the raw encrypted signed request
      */
     protected $rawSignedRequest;
@@ -45,13 +40,11 @@ class SignedRequest
     /**
      * Instantiate a new SignedRequest entity.
      *
-     * @param Application $App              the Application entity
+     * @param Application $app the Application entity
      * @param null|string $rawSignedRequest the raw signed request
      */
-    public function __construct(Application $App, $rawSignedRequest = null)
+    public function __construct(protected \Facebook\Application $app, $rawSignedRequest = null)
     {
-        $this->app = $App;
-
         if (!$rawSignedRequest) {
             return;
         }
@@ -91,11 +84,7 @@ class SignedRequest
      */
     public function get($key, $default = null)
     {
-        if (isset($this->payload[$key])) {
-            return $this->payload[$key];
-        }
-
-        return $default;
+        return $this->payload[$key] ?? $default;
     }
 
     /**
@@ -110,10 +99,8 @@ class SignedRequest
 
     /**
      * Checks for OAuth data in the payload.
-     *
-     * @return bool
      */
-    public function hasOAuthData()
+    public function hasOAuthData(): bool
     {
         return $this->get('oauth_token') || $this->get('code');
     }
@@ -121,14 +108,12 @@ class SignedRequest
     /**
      * Creates a signed request from an array of data.
      *
-     * @param array $payload
      *
-     * @return string
      */
-    public function make(array $payload)
+    public function make(array $payload): string
     {
-        $payload['algorithm'] = $payload['algorithm'] ?? 'HMAC-SHA256';
-        $payload['issued_at'] = $payload['issued_at'] ?? time();
+        $payload['algorithm'] ??= 'HMAC-SHA256';
+        $payload['issued_at'] ??= time();
         $encodedPayload = $this->base64UrlEncode(json_encode($payload));
 
         $hashedSig = $this->hashSignature($encodedPayload);
@@ -143,7 +128,7 @@ class SignedRequest
      */
     protected function parse()
     {
-        list($encodedSig, $encodedPayload) = $this->split();
+        [$encodedSig, $encodedPayload] = $this->split();
 
         // Signature validation
         $sig = $this->decodeSignature($encodedSig);
@@ -160,12 +145,10 @@ class SignedRequest
      * Splits a raw signed request into signature and payload.
      *
      * @throws SDKException
-     *
-     * @return array
      */
-    protected function split()
+    protected function split(): array
     {
-        if (strpos($this->rawSignedRequest, '.') === false) {
+        if (!str_contains($this->rawSignedRequest, '.')) {
             throw new SDKException('Malformed signed request.', 606);
         }
 
@@ -234,10 +217,8 @@ class SignedRequest
      * @param string $encodedData
      *
      * @throws SDKException
-     *
-     * @return string
      */
-    protected function hashSignature($encodedData)
+    protected function hashSignature($encodedData): string
     {
         $hashedSig = hash_hmac(
             'sha256',
@@ -246,7 +227,7 @@ class SignedRequest
             $raw_output = true
         );
 
-        if (!$hashedSig) {
+        if ($hashedSig === '0') {
             throw new SDKException('Unable to hash signature from encoded payload data.', 602);
         }
 
@@ -281,7 +262,7 @@ class SignedRequest
      *
      * @return string decoded string
      */
-    public function base64UrlDecode($input)
+    public function base64UrlDecode($input): string
     {
         $urlDecodedBase64 = strtr($input, '-_', '+/');
         $this->validateBase64($urlDecodedBase64);
@@ -300,7 +281,7 @@ class SignedRequest
      *
      * @return string base64 url encoded input
      */
-    public function base64UrlEncode($input)
+    public function base64UrlEncode($input): string
     {
         return strtr(base64_encode($input), '+/', '-_');
     }

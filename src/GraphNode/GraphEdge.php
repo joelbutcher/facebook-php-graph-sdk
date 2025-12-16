@@ -27,51 +27,19 @@ use Facebook\Exception\SDKException;
 use Facebook\Request;
 use Facebook\Url\UrlManipulator;
 
-class GraphEdge implements \ArrayAccess, \Countable, \IteratorAggregate
+class GraphEdge implements \ArrayAccess, \Countable, \IteratorAggregate, \Stringable
 {
-    /**
-     * @var Request the original request that generated this data
-     */
-    protected $request;
-
-    /**
-     * @var array an array of Graph meta data like pagination, etc
-     */
-    protected $metaData = [];
-
-    /**
-     * @var null|string the parent Graph edge endpoint that generated the list
-     */
-    protected $parentEdgeEndpoint;
-
-    /**
-     * @var null|string the subclass of the child GraphNode's
-     */
-    protected $subclassName;
-
-    /**
-     * The items contained in the collection.
-     *
-     * @var array
-     */
-    protected $items = [];
-
     /**
      * Init this collection of GraphNode's.
      *
      * @param Request     $request            the original request that generated this data
-     * @param array       $data               an array of GraphNode's
+     * @param array $items an array of GraphNode's
      * @param array       $metaData           an array of Graph meta data like pagination, etc
      * @param null|string $parentEdgeEndpoint the parent Graph edge endpoint that generated the list
      * @param null|string $subclassName       the subclass of the child GraphNode's
      */
-    public function __construct(Request $request, array $data = [], array $metaData = [], $parentEdgeEndpoint = null, $subclassName = null)
+    public function __construct(protected \Facebook\Request $request, protected array $items = [], protected array $metaData = [], protected $parentEdgeEndpoint = null, protected $subclassName = null)
     {
-        $this->request = $request;
-        $this->metaData = $metaData;
-        $this->parentEdgeEndpoint = $parentEdgeEndpoint;
-        $this->subclassName = $subclassName;
-        $this->items = $data;
     }
 
     /**
@@ -84,19 +52,13 @@ class GraphEdge implements \ArrayAccess, \Countable, \IteratorAggregate
      */
     public function getField($name, $default = null)
     {
-        if (isset($this->items[$name])) {
-            return $this->items[$name];
-        }
-
-        return $default;
+        return $this->items[$name] ?? $default;
     }
 
     /**
      * Returns a list of all fields set on the object.
-     *
-     * @return array
      */
-    public function getFieldNames()
+    public function getFieldNames(): array
     {
         return array_keys($this->items);
     }
@@ -113,10 +75,8 @@ class GraphEdge implements \ArrayAccess, \Countable, \IteratorAggregate
 
     /**
      * Get the collection of items as a plain array.
-     *
-     * @return array
      */
-    public function asArray()
+    public function asArray(): array
     {
         return array_map(function ($value) {
             if ($value instanceof GraphNode || $value instanceof GraphEdge) {
@@ -130,7 +90,7 @@ class GraphEdge implements \ArrayAccess, \Countable, \IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    public function map(\Closure $callback)
+    public function map(\Closure $callback): static
     {
         return new static(
             $this->request,
@@ -202,10 +162,8 @@ class GraphEdge implements \ArrayAccess, \Countable, \IteratorAggregate
      *
      * @param mixed $key
      * @param mixed $value
-     *
-     * @return void
      */
-    public function offsetSet($key, $value)
+    public function offsetSet($key, $value): void
     {
         if (is_null($key)) {
             $this->items[] = $value;
@@ -218,20 +176,16 @@ class GraphEdge implements \ArrayAccess, \Countable, \IteratorAggregate
      * Unset the item at a given offset.
      *
      * @param string $key
-     *
-     * @return void
      */
-    public function offsetUnset($key)
+    public function offsetUnset($key): void
     {
         unset($this->items[$key]);
     }
 
     /**
      * Convert the collection to its string representation.
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->asJson();
     }
@@ -295,11 +249,7 @@ class GraphEdge implements \ArrayAccess, \Countable, \IteratorAggregate
      */
     public function getCursor($direction)
     {
-        if (isset($this->metaData['paging']['cursors'][$direction])) {
-            return $this->metaData['paging']['cursors'][$direction];
-        }
-
-        return null;
+        return $this->metaData['paging']['cursors'][$direction] ?? null;
     }
 
     /**
@@ -330,7 +280,7 @@ class GraphEdge implements \ArrayAccess, \Countable, \IteratorAggregate
      *
      * @throws SDKException
      */
-    public function validateForPagination()
+    public function validateForPagination(): void
     {
         if ($this->request->getMethod() !== 'GET') {
             throw new SDKException('You can only paginate on a GET request.', 720);
@@ -346,7 +296,7 @@ class GraphEdge implements \ArrayAccess, \Countable, \IteratorAggregate
      *
      * @return null|Request
      */
-    public function getPaginationRequest($direction)
+    public function getPaginationRequest($direction): ?object
     {
         $pageUrl = $this->getPaginationUrl($direction);
         if (!$pageUrl) {
@@ -392,10 +342,6 @@ class GraphEdge implements \ArrayAccess, \Countable, \IteratorAggregate
      */
     public function getTotalCount()
     {
-        if (isset($this->metaData['summary']['total_count'])) {
-            return $this->metaData['summary']['total_count'];
-        }
-
-        return null;
+        return $this->metaData['summary']['total_count'] ?? null;
     }
 }

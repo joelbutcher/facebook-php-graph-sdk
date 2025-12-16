@@ -41,7 +41,7 @@ class InMemoryPersistentDataHandler implements PersistentDataInterface
     /**
      * {@inheritdoc}
      */
-    public function set($key, $value)
+    public function set($key, $value): void
     {
         $this->sessionData[$key] = $value;
     }

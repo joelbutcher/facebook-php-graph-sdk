@@ -28,7 +28,7 @@ use PHPUnit\Framework\TestCase;
 
 class InMemoryPersistentDataHandlerTest extends TestCase
 {
-    public function testCanGetAndSetAVirtualValue()
+    public function testCanGetAndSetAVirtualValue(): void
     {
         $handler = new InMemoryPersistentDataHandler();
         $handler->set('foo', 'bar');
@@ -37,7 +37,7 @@ class InMemoryPersistentDataHandlerTest extends TestCase
         $this->assertEquals('bar', $value);
     }
 
-    public function testGettingAValueThatDoesntExistWillReturnNull()
+    public function testGettingAValueThatDoesntExistWillReturnNull(): void
     {
         $handler = new InMemoryPersistentDataHandler();
         $value = $handler->get('does_not_exist');

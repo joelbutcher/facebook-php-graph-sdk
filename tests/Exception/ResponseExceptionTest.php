@@ -47,7 +47,7 @@ class ResponseExceptionTest extends TestCase
         $this->request = new Request(new Application('123', 'foo'));
     }
 
-    public function testAuthenticationExceptions()
+    public function testAuthenticationExceptions(): void
     {
         $params = [
             'error' => [
@@ -113,7 +113,7 @@ class ResponseExceptionTest extends TestCase
         $this->assertEquals(0, $exception->getSubErrorCode());
     }
 
-    public function testServerExceptions()
+    public function testServerExceptions(): void
     {
         $params = [
             'error' => [
@@ -141,7 +141,7 @@ class ResponseExceptionTest extends TestCase
         $this->assertEquals(2, $exception->getCode());
     }
 
-    public function testThrottleExceptions()
+    public function testThrottleExceptions(): void
     {
         $params = [
             'error' => [
@@ -174,7 +174,7 @@ class ResponseExceptionTest extends TestCase
         $this->assertEquals(341, $exception->getCode());
     }
 
-    public function testUserIssueExceptions()
+    public function testUserIssueExceptions(): void
     {
         $params = [
             'error' => [
@@ -201,7 +201,7 @@ class ResponseExceptionTest extends TestCase
         $this->assertEquals(464, $exception->getSubErrorCode());
     }
 
-    public function testAuthorizationExceptions()
+    public function testAuthorizationExceptions(): void
     {
         $params = [
             'error' => [
@@ -240,7 +240,7 @@ class ResponseExceptionTest extends TestCase
         $this->assertEquals(299, $exception->getCode());
     }
 
-    public function testClientExceptions()
+    public function testClientExceptions(): void
     {
         $params = [
             'error' => [
@@ -261,7 +261,7 @@ class ResponseExceptionTest extends TestCase
         $this->assertEquals(401, $exception->getHttpStatusCode());
     }
 
-    public function testOtherException()
+    public function testOtherException(): void
     {
         $params = [
             'error' => [

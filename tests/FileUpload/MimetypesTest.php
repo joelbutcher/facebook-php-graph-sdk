@@ -33,22 +33,22 @@ class MimetypesTest extends TestCase
      *
      * @see https://github.com/guzzle/guzzle/blob/master/tests/MimetypesTest.php
      */
-    public function testGetsFromExtension()
+    public function testGetsFromExtension(): void
     {
         $this->assertEquals('text/x-php', Mimetypes::getInstance()->fromExtension('php'));
     }
 
-    public function testGetsFromFilename()
+    public function testGetsFromFilename(): void
     {
         $this->assertEquals('text/x-php', Mimetypes::getInstance()->fromFilename(__FILE__));
     }
 
-    public function testGetsFromCaseInsensitiveFilename()
+    public function testGetsFromCaseInsensitiveFilename(): void
     {
         $this->assertEquals('text/x-php', Mimetypes::getInstance()->fromFilename(strtoupper(__FILE__)));
     }
 
-    public function testReturnsNullWhenNoMatchFound()
+    public function testReturnsNullWhenNoMatchFound(): void
     {
         $this->assertNull(Mimetypes::getInstance()->fromExtension('foobar'));
     }

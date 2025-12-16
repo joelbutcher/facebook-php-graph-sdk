@@ -61,12 +61,12 @@ class Facebook
     /**
      * @var Application the Application entity
      */
-    protected $app;
+    protected \Facebook\Application $app;
 
     /**
      * @var Client the Facebook client service
      */
-    protected $client;
+    protected \Facebook\Client $client;
 
     /**
      * @var OAuth2Client The OAuth 2.0 client service.
@@ -91,7 +91,7 @@ class Facebook
     /**
      * @var null|PersistentDataInterface the persistent data handler
      */
-    protected $persistentDataHandler;
+    protected \Facebook\PersistentData\PersistentDataInterface $persistentDataHandler;
 
     /**
      * @var null|BatchResponse|Response stores the last request made to Graph
@@ -101,7 +101,6 @@ class Facebook
     /**
      * Instantiates a new Facebook super-class object.
      *
-     * @param array $config
      *
      * @throws SDKException
      */
@@ -205,10 +204,8 @@ class Facebook
 
     /**
      * Changes the URL detection handler.
-     *
-     * @param UrlDetectionInterface $urlDetectionHandler
      */
-    private function setUrlDetectionHandler(UrlDetectionInterface $urlDetectionHandler)
+    private function setUrlDetectionHandler(UrlDetectionInterface $urlDetectionHandler): void
     {
         $this->urlDetectionHandler = $urlDetectionHandler;
     }
@@ -230,7 +227,7 @@ class Facebook
      *
      * @throws \InvalidArgumentException
      */
-    public function setDefaultAccessToken($accessToken)
+    public function setDefaultAccessToken($accessToken): void
     {
         if (is_string($accessToken)) {
             $this->defaultAccessToken = new AccessToken($accessToken);
@@ -259,10 +256,8 @@ class Facebook
 
     /**
      * Returns the redirect login helper.
-     *
-     * @return RedirectLoginHelper
      */
-    public function getRedirectLoginHelper()
+    public function getRedirectLoginHelper(): \Facebook\Helper\RedirectLoginHelper
     {
         return new RedirectLoginHelper(
             $this->getOAuth2Client(),
@@ -273,30 +268,24 @@ class Facebook
 
     /**
      * Returns the JavaScript helper.
-     *
-     * @return JavaScriptHelper
      */
-    public function getJavaScriptHelper()
+    public function getJavaScriptHelper(): \Facebook\Helper\JavaScriptHelper
     {
         return new JavaScriptHelper($this->app, $this->client, $this->defaultGraphVersion);
     }
 
     /**
      * Returns the canvas helper.
-     *
-     * @return CanvasHelper
      */
-    public function getCanvasHelper()
+    public function getCanvasHelper(): \Facebook\Helper\CanvasHelper
     {
         return new CanvasHelper($this->app, $this->client, $this->defaultGraphVersion);
     }
 
     /**
      * Returns the page tab helper.
-     *
-     * @return PageTabHelper
      */
-    public function getPageTabHelper()
+    public function getPageTabHelper(): \Facebook\Helper\PageTabHelper
     {
         return new PageTabHelper($this->app, $this->client, $this->defaultGraphVersion);
     }
@@ -329,13 +318,11 @@ class Facebook
      * Sends a POST request to Graph and returns the result.
      *
      * @param string                  $endpoint
-     * @param array                   $params
      * @param null|AccessToken|string $accessToken
      * @param null|string             $eTag
      * @param null|string             $graphVersion
      *
      * @throws SDKException
-     *
      * @return Response
      */
     public function post($endpoint, array $params = [], $accessToken = null, $eTag = null, $graphVersion = null)
@@ -354,13 +341,11 @@ class Facebook
      * Sends a DELETE request to Graph and returns the result.
      *
      * @param string                  $endpoint
-     * @param array                   $params
      * @param null|AccessToken|string $accessToken
      * @param null|string             $eTag
      * @param null|string             $graphVersion
      *
      * @throws SDKException
-     *
      * @return Response
      */
     public function delete($endpoint, array $params = [], $accessToken = null, $eTag = null, $graphVersion = null)
@@ -434,13 +419,11 @@ class Facebook
      *
      * @param string                  $method
      * @param string                  $endpoint
-     * @param array                   $params
      * @param null|AccessToken|string $accessToken
      * @param null|string             $eTag
      * @param null|string             $graphVersion
      *
      * @throws SDKException
-     *
      * @return Response
      */
     public function sendRequest($method, $endpoint, array $params = [], $accessToken = null, $eTag = null, $graphVersion = null)
@@ -455,12 +438,10 @@ class Facebook
     /**
      * Sends a batched request to Graph and returns the result.
      *
-     * @param array                   $requests
      * @param null|AccessToken|string $accessToken
      * @param null|string             $graphVersion
      *
      * @throws SDKException
-     *
      * @return BatchResponse
      */
     public function sendBatchRequest(array $requests, $accessToken = null, $graphVersion = null)
@@ -483,10 +464,8 @@ class Facebook
      * @param null|AccessToken|string $accessToken  The top-level access token. Requests with no access token
      *                                              will fallback to this.
      * @param null|string             $graphVersion the Graph API version to use
-     *
-     * @return BatchRequest
      */
-    public function newBatchRequest($accessToken = null, $graphVersion = null)
+    public function newBatchRequest($accessToken = null, $graphVersion = null): \Facebook\BatchRequest
     {
         $accessToken = $accessToken ?: $this->defaultAccessToken;
         $graphVersion = $graphVersion ?: $this->defaultGraphVersion;
@@ -504,16 +483,14 @@ class Facebook
      *
      * @param string                  $method
      * @param string                  $endpoint
-     * @param array                   $params
      * @param null|AccessToken|string $accessToken
      * @param null|string             $eTag
      * @param null|string             $graphVersion
      *
      * @throws SDKException
      *
-     * @return Request
      */
-    public function request($method, $endpoint, array $params = [], $accessToken = null, $eTag = null, $graphVersion = null)
+    public function request($method, $endpoint, array $params = [], $accessToken = null, $eTag = null, $graphVersion = null): \Facebook\Request
     {
         $accessToken = $accessToken ?: $this->defaultAccessToken;
         $graphVersion = $graphVersion ?: $this->defaultGraphVersion;
@@ -535,10 +512,8 @@ class Facebook
      * @param string $pathToFile
      *
      * @throws SDKException
-     *
-     * @return File
      */
-    public function fileToUpload($pathToFile)
+    public function fileToUpload($pathToFile): \Facebook\FileUpload\File
     {
         return new File($pathToFile);
     }
@@ -549,10 +524,8 @@ class Facebook
      * @param string $pathToFile
      *
      * @throws SDKException
-     *
-     * @return Video
      */
-    public function videoToUpload($pathToFile)
+    public function videoToUpload($pathToFile): \Facebook\FileUpload\Video
     {
         return new Video($pathToFile);
     }
@@ -568,10 +541,8 @@ class Facebook
      * @param null|string $graphVersion     the Graph API version to use
      *
      * @throws SDKException
-     *
-     * @return array
      */
-    public function uploadVideo($target, $pathToFile, $metadata = [], $accessToken = null, $maxTransferTries = 5, $graphVersion = null)
+    public function uploadVideo($target, $pathToFile, $metadata = [], $accessToken = null, $maxTransferTries = 5, $graphVersion = null): array
     {
         $accessToken = $accessToken ?: $this->defaultAccessToken;
         $graphVersion = $graphVersion ?: $this->defaultGraphVersion;
@@ -594,9 +565,7 @@ class Facebook
     /**
      * Attempts to upload a chunk of a file in $retryCountdown tries.
      *
-     * @param ResumableUploader $uploader
      * @param string            $endpoint
-     * @param TransferChunk     $chunk
      * @param int               $retryCountdown
      *
      * @throws SDKException

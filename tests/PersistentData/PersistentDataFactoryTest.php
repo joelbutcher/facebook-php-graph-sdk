@@ -36,11 +36,10 @@ class PersistentDataFactoryTest extends TestCase
 
     /**
      * @param mixed  $handler
-     * @param string $expected
      *
-     * @dataProvider persistentDataHandlerProviders
      */
-    public function testCreatePersistentDataHandler($handler, $expected)
+    #[\PHPUnit\Framework\Attributes\DataProvider('persistentDataHandlerProviders')]
+    public function testCreatePersistentDataHandler($handler, string $expected): void
     {
         $persistentDataHandler = PersistentDataFactory::createPersistentDataHandler($handler);
 
@@ -48,10 +47,7 @@ class PersistentDataFactoryTest extends TestCase
         $this->assertInstanceOf($expected, $persistentDataHandler);
     }
 
-    /**
-     * @return array
-     */
-    public function persistentDataHandlerProviders()
+    public static function persistentDataHandlerProviders(): array
     {
         $handlers = [
             ['memory', self::COMMON_NAMESPACE.'InMemoryPersistentDataHandler'],

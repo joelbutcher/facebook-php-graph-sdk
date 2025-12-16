@@ -77,14 +77,8 @@ class Request
     protected $eTag;
 
     /**
-     * @var string graph version to use for this request
-     */
-    protected $graphVersion;
-
-    /**
      * Creates a new Request entity.
      *
-     * @param null|Application        $app
      * @param null|AccessToken|string $accessToken
      * @param null|string             $method
      * @param null|string             $endpoint
@@ -92,7 +86,7 @@ class Request
      * @param null|string             $eTag
      * @param null|string             $graphVersion
      */
-    public function __construct(Application $app = null, $accessToken = null, $method = null, $endpoint = null, array $params = [], $eTag = null, $graphVersion = null)
+    public function __construct(?Application $app = null, $accessToken = null, $method = null, $endpoint = null, array $params = [], $eTag = null, protected $graphVersion = null)
     {
         $this->setApp($app);
         $this->setAccessToken($accessToken);
@@ -100,7 +94,6 @@ class Request
         $this->setEndpoint($endpoint);
         $this->setParams($params);
         $this->setETag($eTag);
-        $this->graphVersion = $graphVersion;
     }
 
     /**
@@ -108,10 +101,8 @@ class Request
      *
      * @param null|AccessToken|string
      * @param mixed $accessToken
-     *
-     * @return Request
      */
-    public function setAccessToken($accessToken)
+    public function setAccessToken($accessToken): static
     {
         $this->accessToken = $accessToken;
         if ($accessToken instanceof AccessToken) {
@@ -127,10 +118,8 @@ class Request
      * @param string $accessToken the access token
      *
      * @throws SDKException
-     *
-     * @return Request
      */
-    public function setAccessTokenFromParams($accessToken)
+    public function setAccessTokenFromParams($accessToken): static
     {
         $existingAccessToken = $this->getAccessToken();
         if (!$existingAccessToken) {
@@ -154,20 +143,16 @@ class Request
 
     /**
      * Return the access token for this request as an AccessToken entity.
-     *
-     * @return null|AccessToken
      */
-    public function getAccessTokenEntity()
+    public function getAccessTokenEntity(): ?\Facebook\Authentication\AccessToken
     {
         return $this->accessToken ? new AccessToken($this->accessToken) : null;
     }
 
     /**
      * Set the Application entity used for this request.
-     *
-     * @param null|Application $app
      */
-    public function setApp(Application $app = null)
+    public function setApp(?Application $app = null): void
     {
         $this->app = $app;
     }
@@ -201,7 +186,7 @@ class Request
      *
      * @throws SDKException
      */
-    public function validateAccessToken()
+    public function validateAccessToken(): void
     {
         $accessToken = $this->getAccessToken();
         if (!$accessToken) {
@@ -215,9 +200,9 @@ class Request
      * @param string
      * @param mixed $method
      */
-    public function setMethod($method)
+    public function setMethod($method): void
     {
-        $this->method = strtoupper($method);
+        $this->method = strtoupper((string) $method);
     }
 
     /**
@@ -235,7 +220,7 @@ class Request
      *
      * @throws SDKException
      */
-    public function validateMethod()
+    public function validateMethod(): void
     {
         if (!$this->method) {
             throw new SDKException('HTTP method not specified.');
@@ -253,10 +238,8 @@ class Request
      * @param mixed $endpoint
      *
      * @throws SDKException
-     *
-     * @return Request
      */
-    public function setEndpoint($endpoint)
+    public function setEndpoint($endpoint): static
     {
         // Harvest the access token from the endpoint to keep things in sync
         $params = UrlManipulator::getParamsAsArray($endpoint);
@@ -284,10 +267,8 @@ class Request
 
     /**
      * Generate and return the headers for this request.
-     *
-     * @return array
      */
-    public function getHeaders()
+    public function getHeaders(): array
     {
         $headers = static::getDefaultHeaders();
 
@@ -300,10 +281,8 @@ class Request
 
     /**
      * Set the headers for this request.
-     *
-     * @param array $headers
      */
-    public function setHeaders(array $headers)
+    public function setHeaders(array $headers): void
     {
         $this->headers = array_merge($this->headers, $headers);
     }
@@ -313,7 +292,7 @@ class Request
      *
      * @param string $eTag
      */
-    public function setETag($eTag)
+    public function setETag($eTag): void
     {
         $this->eTag = $eTag;
     }
@@ -321,13 +300,11 @@ class Request
     /**
      * Set the params for this request.
      *
-     * @param array $params
      *
      * @throws SDKException
      *
-     * @return Request
      */
-    public function setParams(array $params = [])
+    public function setParams(array $params = []): static
     {
         if (isset($params['access_token'])) {
             $this->setAccessTokenFromParams($params['access_token']);
@@ -347,11 +324,9 @@ class Request
     /**
      * Set the params for this request without filtering them first.
      *
-     * @param array $params
      *
-     * @return Request
      */
-    public function dangerouslySetParams(array $params = [])
+    public function dangerouslySetParams(array $params = []): static
     {
         $this->params = array_merge($this->params, $params);
 
@@ -361,11 +336,9 @@ class Request
     /**
      * Iterate over the params and pull out the file uploads.
      *
-     * @param array $params
      *
-     * @return array
      */
-    public function sanitizeFileParams(array $params)
+    public function sanitizeFileParams(array $params): array
     {
         foreach ($params as $key => $value) {
             if ($value instanceof File) {
@@ -381,9 +354,8 @@ class Request
      * Add a file to be uploaded.
      *
      * @param string $key
-     * @param File   $file
      */
-    public function addFile($key, File $file)
+    public function addFile($key, File $file): void
     {
         $this->files[$key] = $file;
     }
@@ -391,7 +363,7 @@ class Request
     /**
      * Removes all the files from the upload queue.
      */
-    public function resetFiles()
+    public function resetFiles(): void
     {
         $this->files = [];
     }
@@ -408,20 +380,16 @@ class Request
 
     /**
      * Let's us know if there is a file upload with this request.
-     *
-     * @return bool
      */
-    public function containsFileUploads()
+    public function containsFileUploads(): bool
     {
-        return !empty($this->files);
+        return $this->files !== [];
     }
 
     /**
      * Let's us know if there is a video upload with this request.
-     *
-     * @return bool
      */
-    public function containsVideoUploads()
+    public function containsVideoUploads(): bool
     {
         foreach ($this->files as $file) {
             if ($file instanceof Video) {
@@ -434,10 +402,8 @@ class Request
 
     /**
      * Returns the body of the request as multipart/form-data.
-     *
-     * @return RequestBodyMultipart
      */
-    public function getMultipartBody()
+    public function getMultipartBody(): \Facebook\Http\RequestBodyMultipart
     {
         $params = $this->getPostParams();
 
@@ -446,10 +412,8 @@ class Request
 
     /**
      * Returns the body of the request as URL-encoded.
-     *
-     * @return RequestBodyUrlEncoded
      */
-    public function getUrlEncodedBody()
+    public function getUrlEncodedBody(): \Facebook\Http\RequestBodyUrlEncoded
     {
         $params = $this->getPostParams();
 
@@ -522,10 +486,8 @@ class Request
 
     /**
      * Return the default headers that every request should use.
-     *
-     * @return array
      */
-    public static function getDefaultHeaders()
+    public static function getDefaultHeaders(): array
     {
         return [
             'User-Agent'      => 'fb-php-'.Facebook::VERSION,

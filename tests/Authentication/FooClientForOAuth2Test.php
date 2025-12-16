@@ -31,22 +31,23 @@ class FooClientForOAuth2Test extends Client
 {
     protected $response = '';
 
-    public function setMetadataResponse()
+    public function setMetadataResponse(): void
     {
         $this->response = '{"data":{"user_id":"444"}}';
     }
 
-    public function setAccessTokenResponse()
+    public function setAccessTokenResponse(): void
     {
         $this->response = '{"access_token":"my_access_token","expires":"1422115200"}';
     }
 
-    public function setCodeResponse()
+    public function setCodeResponse(): void
     {
         $this->response = '{"code":"my_neat_code"}';
     }
 
-    public function sendRequest(Request $request)
+    #[\Override]
+    public function sendRequest(Request $request): \Facebook\Response
     {
         return new Response(
             $request,

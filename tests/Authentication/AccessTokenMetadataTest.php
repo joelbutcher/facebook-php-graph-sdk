@@ -51,7 +51,7 @@ class AccessTokenMetadataTest extends TestCase
         ],
     ];
 
-    public function testDatesGetCastToDateTime()
+    public function testDatesGetCastToDateTime(): void
     {
         $metadata = new AccessTokenMetadata($this->graphResponseData);
 
@@ -62,7 +62,7 @@ class AccessTokenMetadataTest extends TestCase
         $this->assertInstanceOf(\DateTime::class, $issuedAt);
     }
 
-    public function testAllTheGettersReturnTheProperValue()
+    public function testAllTheGettersReturnTheProperValue(): void
     {
         $metadata = new AccessTokenMetadata($this->graphResponseData);
 
@@ -81,13 +81,13 @@ class AccessTokenMetadataTest extends TestCase
         $this->assertEquals('1337', $metadata->getUserId());
     }
 
-    public function testInvalidMetadataWillThrow()
+    public function testInvalidMetadataWillThrow(): void
     {
         $this->expectException(\Facebook\Exception\SDKException::class);
         new AccessTokenMetadata(['foo' => 'bar']);
     }
 
-    public function testAnExpectedAppIdWillNotThrow()
+    public function testAnExpectedAppIdWillNotThrow(): void
     {
         $metadata = new AccessTokenMetadata($this->graphResponseData);
         $metadata->validateAppId('123');
@@ -95,7 +95,7 @@ class AccessTokenMetadataTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function testAnUnexpectedAppIdWillThrow()
+    public function testAnUnexpectedAppIdWillThrow(): void
     {
         $this->expectException(\Facebook\Exception\SDKException::class);
         $metadata = new AccessTokenMetadata($this->graphResponseData);
@@ -104,7 +104,7 @@ class AccessTokenMetadataTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function testAnExpectedUserIdWillNotThrow()
+    public function testAnExpectedUserIdWillNotThrow(): void
     {
         $metadata = new AccessTokenMetadata($this->graphResponseData);
         $metadata->validateUserId('1337');
@@ -112,14 +112,14 @@ class AccessTokenMetadataTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function testAnUnexpectedUserIdWillThrow()
+    public function testAnUnexpectedUserIdWillThrow(): void
     {
         $this->expectException(\Facebook\Exception\SDKException::class);
         $metadata = new AccessTokenMetadata($this->graphResponseData);
         $metadata->validateUserId('foo');
     }
 
-    public function testAnActiveAccessTokenWillNotThrow()
+    public function testAnActiveAccessTokenWillNotThrow(): void
     {
         $this->graphResponseData['data']['expires_at'] = time() + 1000;
         $metadata = new AccessTokenMetadata($this->graphResponseData);
@@ -128,7 +128,7 @@ class AccessTokenMetadataTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function testAnExpiredAccessTokenWillThrow()
+    public function testAnExpiredAccessTokenWillThrow(): void
     {
         $this->expectException(\Facebook\Exception\SDKException::class);
         $this->graphResponseData['data']['expires_at'] = time() - 1000;

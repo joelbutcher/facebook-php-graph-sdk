@@ -27,7 +27,7 @@ use Facebook\PersistentData\PersistentDataInterface;
 
 class FooPersistentDataInterface implements PersistentDataInterface
 {
-    public function get($key)
+    public function get($key): string
     {
         return 'foo';
     }

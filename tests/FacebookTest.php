@@ -46,7 +46,7 @@ class FacebookTest extends TestCase
         'default_graph_version' => 'v11.0',
     ];
 
-    public function testInstantiatingWithoutAppIdThrows()
+    public function testInstantiatingWithoutAppIdThrows(): void
     {
         $this->expectException(\Facebook\Exception\SDKException::class);
 
@@ -59,7 +59,7 @@ class FacebookTest extends TestCase
         new Facebook($config);
     }
 
-    public function testInstantiatingWithoutAppSecretThrows()
+    public function testInstantiatingWithoutAppSecretThrows(): void
     {
         $this->expectException(\Facebook\Exception\SDKException::class);
 
@@ -72,7 +72,7 @@ class FacebookTest extends TestCase
         new Facebook($config);
     }
 
-    public function testInstantiatingWithoutDefaultGraphVersionThrows()
+    public function testInstantiatingWithoutDefaultGraphVersionThrows(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -83,7 +83,7 @@ class FacebookTest extends TestCase
         new Facebook($config);
     }
 
-    public function testSettingAnInvalidHttpClientTypeThrows()
+    public function testSettingAnInvalidHttpClientTypeThrows(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -93,7 +93,7 @@ class FacebookTest extends TestCase
         new Facebook($config);
     }
 
-    public function testSettingAnInvalidHttpClientClassThrows()
+    public function testSettingAnInvalidHttpClientClassThrows(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -103,7 +103,7 @@ class FacebookTest extends TestCase
         new Facebook($config);
     }
 
-    public function testSettingAnInvalidPersistentDataHandlerThrows()
+    public function testSettingAnInvalidPersistentDataHandlerThrows(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -113,7 +113,7 @@ class FacebookTest extends TestCase
         new Facebook($config);
     }
 
-    public function testPersistentDataHandlerCanBeForced()
+    public function testPersistentDataHandlerCanBeForced(): void
     {
         $config = array_merge($this->config, [
             'persistent_data_handler' => 'memory',
@@ -125,7 +125,7 @@ class FacebookTest extends TestCase
         );
     }
 
-    public function testSettingAnInvalidUrlHandlerThrows()
+    public function testSettingAnInvalidUrlHandlerThrows(): void
     {
         $this->expectException(\Error::class);
 
@@ -135,13 +135,13 @@ class FacebookTest extends TestCase
         new Facebook($config);
     }
 
-    public function testTheUrlHandlerWillDefaultToTheImplementation()
+    public function testTheUrlHandlerWillDefaultToTheImplementation(): void
     {
         $fb = new Facebook($this->config);
         $this->assertInstanceOf(UrlDetectionHandler::class, $fb->getUrlDetectionHandler());
     }
 
-    public function testAnAccessTokenCanBeSetAsAString()
+    public function testAnAccessTokenCanBeSetAsAString(): void
     {
         $fb = new Facebook($this->config);
         $fb->setDefaultAccessToken('foo_token');
@@ -151,7 +151,7 @@ class FacebookTest extends TestCase
         $this->assertEquals('foo_token', (string) $accessToken);
     }
 
-    public function testAnAccessTokenCanBeSetAsAnAccessTokenEntity()
+    public function testAnAccessTokenCanBeSetAsAnAccessTokenEntity(): void
     {
         $fb = new Facebook($this->config);
         $fb->setDefaultAccessToken(new AccessToken('bar_token'));
@@ -161,7 +161,7 @@ class FacebookTest extends TestCase
         $this->assertEquals('bar_token', (string) $accessToken);
     }
 
-    public function testSettingAnAccessThatIsNotStringOrAccessTokenThrows()
+    public function testSettingAnAccessThatIsNotStringOrAccessTokenThrows(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -171,7 +171,7 @@ class FacebookTest extends TestCase
         new Facebook($config);
     }
 
-    public function testCreatingANewRequestWillDefaultToTheProperConfig()
+    public function testCreatingANewRequestWillDefaultToTheProperConfig(): void
     {
         $config = array_merge($this->config, [
             'default_access_token'  => 'foo_token',
@@ -191,7 +191,7 @@ class FacebookTest extends TestCase
         );
     }
 
-    public function testCreatingANewBatchRequestWillDefaultToTheProperConfig()
+    public function testCreatingANewBatchRequestWillDefaultToTheProperConfig(): void
     {
         $config = array_merge($this->config, [
             'default_access_token'  => 'foo_token',
@@ -209,11 +209,11 @@ class FacebookTest extends TestCase
             Client::BASE_GRAPH_URL_BETA,
             $fb->getClient()->getBaseGraphUrl()
         );
-        $this->assertInstanceOf('Facebook\BatchRequest', $batchRequest);
+        $this->assertInstanceOf(\Facebook\BatchRequest::class, $batchRequest);
         $this->assertCount(0, $batchRequest->getRequests());
     }
 
-    public function testCanInjectCustomHandlers()
+    public function testCanInjectCustomHandlers(): void
     {
         $config = array_merge($this->config, [
             'http_client'             => new FooHttpClientInterface(),
@@ -236,7 +236,7 @@ class FacebookTest extends TestCase
         );
     }
 
-    public function testPaginationReturnsProperResponse()
+    public function testPaginationReturnsProperResponse(): void
     {
         $config = array_merge($this->config, [
             'http_client' => new FooHttpClientInterface(),
@@ -271,7 +271,7 @@ class FacebookTest extends TestCase
         $this->assertEquals(200, $lastResponse->getHttpStatusCode());
     }
 
-    public function testCanGetSuccessfulTransferWithMaxTries()
+    public function testCanGetSuccessfulTransferWithMaxTries(): void
     {
         $config = array_merge($this->config, [
             'http_client' => new FakeGraphApiForResumableUpload(),
@@ -284,7 +284,7 @@ class FacebookTest extends TestCase
         ], $response);
     }
 
-    public function testMaxingOutRetriesWillThrow()
+    public function testMaxingOutRetriesWillThrow(): void
     {
         $this->expectException(\Facebook\Exception\ResponseException::class);
 

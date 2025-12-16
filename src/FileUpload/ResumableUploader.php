@@ -34,50 +34,30 @@ use Facebook\Request;
 class ResumableUploader
 {
     /**
-     * @var Application
-     */
-    protected $app;
-
-    /**
-     * @var string
-     */
-    protected $accessToken;
-
-    /**
-     * @var Client the Facebook client service
-     */
-    protected $client;
-
-    /**
-     * @var string graph version to use for this request
-     */
-    protected $graphVersion;
-
-    /**
-     * @param Application             $app
-     * @param Client                  $client
      * @param null|AccessToken|string $accessToken
      * @param string                  $graphVersion
      */
-    public function __construct(Application $app, Client $client, $accessToken, $graphVersion)
+    public function __construct(
+        protected \Facebook\Application $app,
+        /**
+         * @var Client the Facebook client service
+         */
+        protected \Facebook\Client $client,
+        protected $accessToken,
+        protected $graphVersion
+    )
     {
-        $this->app = $app;
-        $this->client = $client;
-        $this->accessToken = $accessToken;
-        $this->graphVersion = $graphVersion;
     }
 
     /**
      * Upload by chunks - start phase.
      *
      * @param string $endpoint
-     * @param File   $file
      *
      * @throws SDKException
      *
-     * @return TransferChunk
      */
-    public function start($endpoint, File $file)
+    public function start($endpoint, File $file): \Facebook\FileUpload\TransferChunk
     {
         $params = [
             'upload_phase' => 'start',
@@ -92,11 +72,9 @@ class ResumableUploader
      * Upload by chunks - transfer phase.
      *
      * @param string        $endpoint
-     * @param TransferChunk $chunk
      * @param bool          $allowToThrow
      *
      * @throws ResponseException
-     *
      * @return TransferChunk
      */
     public function transfer($endpoint, TransferChunk $chunk, $allowToThrow = false)
@@ -153,7 +131,7 @@ class ResumableUploader
      *
      * @return array
      */
-    private function sendUploadRequest($endpoint, $params = [])
+    private function sendUploadRequest($endpoint, array $params = [])
     {
         $request = new Request($this->app, $this->accessToken, 'POST', $endpoint, $params, null, $this->graphVersion);
 

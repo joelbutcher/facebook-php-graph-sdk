@@ -66,11 +66,6 @@ class Client
     const DEFAULT_VIDEO_UPLOAD_REQUEST_TIMEOUT = 7200;
 
     /**
-     * @var bool toggle to use Graph beta url
-     */
-    protected $enableBetaMode = false;
-
-    /**
      * @var httpClient HTTP client handler
      */
     protected $httpClient;
@@ -83,21 +78,17 @@ class Client
     /**
      * Instantiates a new Client object.
      *
-     * @param null|ClientInterface $httpClient
-     * @param bool            $enableBeta
+     * @param bool $enableBetaMode
      */
-    public function __construct(ClientInterface $httpClient = null, $enableBeta = false)
+    public function __construct(?ClientInterface $httpClient = null, protected $enableBetaMode = false)
     {
         $this->httpClient = $httpClient ?: Psr18ClientDiscovery::find();
-        $this->enableBetaMode = $enableBeta;
     }
 
     /**
      * Sets the HTTP client handler.
-     *
-     * @param ClientInterface $httpClient
      */
-    public function setClientInterface(ClientInterface $httpClient)
+    public function setClientInterface(ClientInterface $httpClient): void
     {
         $this->httpClient = $httpClient;
     }
@@ -117,7 +108,7 @@ class Client
      *
      * @param bool $betaMode
      */
-    public function enableBetaMode($betaMode = true)
+    public function enableBetaMode($betaMode = true): void
     {
         $this->enableBetaMode = $betaMode;
     }
@@ -141,11 +132,9 @@ class Client
     /**
      * Prepares the request for sending to the client handler.
      *
-     * @param Request $request
      *
-     * @return array
      */
-    public function prepareRequestMessage(Request $request)
+    public function prepareRequestMessage(Request $request): array
     {
         $postToVideoUrl = $request->containsVideoUploads();
         $url = $this->getBaseGraphUrl($postToVideoUrl).$request->getUrl();
@@ -174,15 +163,13 @@ class Client
     /**
      * Makes the request to Graph and returns the result.
      *
-     * @param Request $request
      *
      * @throws SDKException
      *
-     * @return Response
      */
-    public function sendRequest(Request $request)
+    public function sendRequest(Request $request): \Facebook\Response
     {
-        if (get_class($request) === 'Facebook\Request') {
+        if ($request::class === \Facebook\Request::class) {
             $request->validateAccessToken();
         }
 
@@ -223,13 +210,11 @@ class Client
     /**
      * Makes a batched request to Graph and returns the result.
      *
-     * @param BatchRequest $request
      *
      * @throws SDKException
      *
-     * @return BatchResponse
      */
-    public function sendBatchRequest(BatchRequest $request)
+    public function sendBatchRequest(BatchRequest $request): \Facebook\BatchResponse
     {
         $request->prepareRequestsForBatch();
         $Response = $this->sendRequest($request);

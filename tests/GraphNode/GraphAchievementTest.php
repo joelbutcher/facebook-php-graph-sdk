@@ -28,7 +28,7 @@ use Facebook\GraphNode\GraphUser;
 
 class GraphAchievementTest extends AbstractGraphNode
 {
-    public function testIdIsString()
+    public function testIdIsString(): void
     {
         $dataFromGraph = [
             'id' => '1337',
@@ -42,7 +42,7 @@ class GraphAchievementTest extends AbstractGraphNode
         $this->assertEquals($dataFromGraph['id'], $id);
     }
 
-    public function testTypeIsAlwaysString()
+    public function testTypeIsAlwaysString(): void
     {
         $dataFromGraph = [
             'id' => '1337',
@@ -56,10 +56,10 @@ class GraphAchievementTest extends AbstractGraphNode
         $this->assertEquals('game.achievement', $type);
     }
 
-    public function testNoFeedStoryIsBoolean()
+    public function testNoFeedStoryIsBoolean(): void
     {
         $dataFromGraph = [
-            'no_feed_story' => (rand(0, 1) == 1),
+            'no_feed_story' => (random_int(0, 1) === 1),
         ];
 
         $factory = $this->makeFactoryWithData($dataFromGraph);
@@ -70,7 +70,7 @@ class GraphAchievementTest extends AbstractGraphNode
         $this->assertIsBool($isNoFeedStory);
     }
 
-    public function testDatesGetCastToDateTime()
+    public function testDatesGetCastToDateTime(): void
     {
         $dataFromGraph = [
             'publish_time' => '2014-07-15T03:54:34+0000',
@@ -84,7 +84,7 @@ class GraphAchievementTest extends AbstractGraphNode
         $this->assertInstanceOf(\DateTime::class, $publishTime);
     }
 
-    public function testFromGetsCastAsGraphUser()
+    public function testFromGetsCastAsGraphUser(): void
     {
         $dataFromGraph = [
             'from' => [
@@ -101,7 +101,7 @@ class GraphAchievementTest extends AbstractGraphNode
         $this->assertInstanceOf(GraphUser::class, $from);
     }
 
-    public function testApplicationGetsCastAsGraphApplication()
+    public function testApplicationGetsCastAsGraphApplication(): void
     {
         $dataFromGraph = [
             'application' => [

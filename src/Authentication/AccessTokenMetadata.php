@@ -48,8 +48,6 @@ class AccessTokenMetadata
     protected static $dateProperties = ['expires_at', 'issued_at'];
 
     /**
-     * @param array $metadata
-     *
      * @throws SDKException
      */
     public function __construct(array $metadata)
@@ -73,11 +71,7 @@ class AccessTokenMetadata
      */
     public function getField($field, $default = null)
     {
-        if (isset($this->metadata[$field])) {
-            return $this->metadata[$field];
-        }
-
-        return $default;
+        return $this->metadata[$field] ?? $default;
     }
 
     /**
@@ -151,10 +145,8 @@ class AccessTokenMetadata
     /**
      * Any error that a request to the graph api
      * would return due to the access token.
-     *
-     * @return null|bool
      */
-    public function isError()
+    public function isError(): bool
     {
         return $this->getField('error') !== null;
     }
@@ -305,7 +297,7 @@ class AccessTokenMetadata
      *
      * @throws SDKException
      */
-    public function validateAppId($appId)
+    public function validateAppId($appId): void
     {
         if ($this->getAppId() !== $appId) {
             throw new SDKException('Access token metadata contains unexpected app ID.', 401);
@@ -320,7 +312,7 @@ class AccessTokenMetadata
      *
      * @throws SDKException
      */
-    public function validateUserId($userId)
+    public function validateUserId($userId): void
     {
         if ($this->getUserId() !== $userId) {
             throw new SDKException('Access token metadata contains unexpected user ID.', 401);
@@ -332,7 +324,7 @@ class AccessTokenMetadata
      *
      * @throws SDKException
      */
-    public function validateExpiration()
+    public function validateExpiration(): void
     {
         if (!$this->getExpiresAt() instanceof \DateTime) {
             return;
@@ -347,10 +339,8 @@ class AccessTokenMetadata
      * Converts a unix timestamp into a DateTime entity.
      *
      * @param int $timestamp
-     *
-     * @return \DateTime
      */
-    private function convertTimestampToDateTime($timestamp)
+    private function convertTimestampToDateTime($timestamp): \DateTime
     {
         $dt = new \DateTime();
         $dt->setTimestamp($timestamp);
@@ -361,7 +351,7 @@ class AccessTokenMetadata
     /**
      * Casts the unix timestamps as DateTime entities.
      */
-    private function castTimestampsToDateTime()
+    private function castTimestampsToDateTime(): void
     {
         foreach (static::$dateProperties as $key) {
             if (isset($this->metadata[$key]) && $this->metadata[$key] !== 0) {

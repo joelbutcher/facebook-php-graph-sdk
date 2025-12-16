@@ -42,7 +42,7 @@ class GraphGroupTest extends TestCase
         $this->responseMock = \Mockery::mock(Response::class);
     }
 
-    public function testCoverGetsCastAsGraphCoverPhoto()
+    public function testCoverGetsCastAsGraphCoverPhoto(): void
     {
         $dataFromGraph = [
             'cover' => ['id' => '1337'],
@@ -56,7 +56,7 @@ class GraphGroupTest extends TestCase
         $this->assertInstanceOf(GraphCoverPhoto::class, $cover);
     }
 
-    public function testVenueGetsCastAsGraphLocation()
+    public function testVenueGetsCastAsGraphLocation(): void
     {
         $dataFromGraph = [
             'venue' => ['id' => '1337'],

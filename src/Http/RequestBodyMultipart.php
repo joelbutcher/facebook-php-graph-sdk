@@ -39,31 +39,19 @@ class RequestBodyMultipart implements RequestBodyInterface
     private $boundary;
 
     /**
-     * @var array the parameters to send with this request
-     */
-    private $params;
-
-    /**
-     * @var array the files to send with this request
-     */
-    private $files = [];
-
-    /**
      * @param array  $params   the parameters to send with this request
      * @param array  $files    the files to send with this request
      * @param string $boundary provide a specific boundary
      */
-    public function __construct(array $params = [], array $files = [], $boundary = null)
+    public function __construct(private readonly array $params = [], private readonly array $files = [], $boundary = null)
     {
-        $this->params = $params;
-        $this->files = $files;
         $this->boundary = $boundary ?: uniqid();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBody()
+    public function getBody(): string
     {
         $body = '';
 
@@ -98,11 +86,9 @@ class RequestBodyMultipart implements RequestBodyInterface
      * Get the string needed to transfer a file.
      *
      * @param string $name
-     * @param File   $file
      *
-     * @return string
      */
-    private function getFileString($name, File $file)
+    private function getFileString($name, File $file): string
     {
         return sprintf(
             "--%s\r\nContent-Disposition: form-data; name=\"%s\"; filename=\"%s\"%s\r\n\r\n%s\r\n",
@@ -119,10 +105,8 @@ class RequestBodyMultipart implements RequestBodyInterface
      *
      * @param string $name
      * @param string $value
-     *
-     * @return string
      */
-    private function getParamString($name, $value)
+    private function getParamString($name, $value): string
     {
         return sprintf(
             "--%s\r\nContent-Disposition: form-data; name=\"%s\"\r\n\r\n%s\r\n",
@@ -135,18 +119,16 @@ class RequestBodyMultipart implements RequestBodyInterface
     /**
      * Returns the params as an array of nested params.
      *
-     * @param array $params
      *
-     * @return array
      */
-    private function getNestedParams(array $params)
+    private function getNestedParams(array $params): array
     {
         $query = http_build_query($params, '', '&');
         $params = explode('&', $query);
         $result = [];
 
         foreach ($params as $param) {
-            list($key, $value) = explode('=', $param, 2);
+            [$key, $value] = explode('=', $param, 2);
             $result[urldecode($key)] = urldecode($value);
         }
 
@@ -156,11 +138,9 @@ class RequestBodyMultipart implements RequestBodyInterface
     /**
      * Get the headers needed before transferring the content of a POST file.
      *
-     * @param File $file
      *
-     * @return string
      */
-    protected function getFileHeaders(File $file)
+    protected function getFileHeaders(File $file): string
     {
         return "\r\nContent-Type: {$file->getMimetype()}";
     }

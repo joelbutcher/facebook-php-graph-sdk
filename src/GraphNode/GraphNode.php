@@ -23,7 +23,7 @@
 
 namespace Facebook\GraphNode;
 
-class GraphNode
+class GraphNode implements \Stringable
 {
     /**
      * @var array maps object key names to Graph object types
@@ -39,8 +39,6 @@ class GraphNode
 
     /**
      * Init this Graph object.
-     *
-     * @param array $data
      */
     public function __construct(array $data = [])
     {
@@ -57,19 +55,13 @@ class GraphNode
      */
     public function getField($name, $default = null)
     {
-        if (isset($this->fields[$name])) {
-            return $this->fields[$name];
-        }
-
-        return $default;
+        return $this->fields[$name] ?? $default;
     }
 
     /**
      * Returns a list of all fields set on the object.
-     *
-     * @return array
      */
-    public function getFieldNames()
+    public function getFieldNames(): array
     {
         return array_keys($this->fields);
     }
@@ -86,10 +78,8 @@ class GraphNode
 
     /**
      * Get all fields as a plain array.
-     *
-     * @return array
      */
-    public function asArray()
+    public function asArray(): array
     {
         return array_map(function ($value) {
             if ($value instanceof GraphNode || $value instanceof GraphEdge) {
@@ -102,12 +92,10 @@ class GraphNode
 
     /**
      * Convert the collection to its string representation.
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return json_encode($this->uncastFields());
+        return (string) json_encode($this->uncastFields());
     }
 
     /**
@@ -127,10 +115,8 @@ class GraphNode
      * @TODO Add auto-casting to AccessToken entities.
      *
      * @param array $data the array to iterate over
-     *
-     * @return array
      */
-    private function castFields(array $data)
+    private function castFields(array $data): array
     {
         $fields = [];
 
@@ -153,10 +139,8 @@ class GraphNode
     /**
      * Uncasts any auto-casted datatypes.
      * Basically the reverse of castFields().
-     *
-     * @return array
      */
-    private function uncastFields()
+    private function uncastFields(): array
     {
         $fields = $this->asArray();
 
@@ -173,10 +157,8 @@ class GraphNode
      * Determines if a value from Graph should be cast to DateTime.
      *
      * @param string $key
-     *
-     * @return bool
      */
-    private function shouldCastAsDateTime($key)
+    private function shouldCastAsDateTime(int|string $key): bool
     {
         return in_array($key, [
             'created_time',
@@ -196,13 +178,12 @@ class GraphNode
      *
      * @param string $string
      *
-     * @return bool
      *
      * @see https://developers.facebook.com/docs/graph-api/using-graph-api/#readmodifiers
      * @see http://www.cl.cam.ac.uk/~mgk25/iso-time.html
      * @see http://en.wikipedia.org/wiki/ISO_8601
      */
-    private function isIso8601DateString($string)
+    private function isIso8601DateString($string): bool
     {
         // This insane regex was yoinked from here:
         // http://www.pelagodesign.com/blog/2009/05/20/iso-8601-date-validation-that-doesnt-suck/
@@ -241,10 +222,8 @@ class GraphNode
      * Casts a birthday value from Graph to Birthday.
      *
      * @param string $value
-     *
-     * @return Birthday
      */
-    private function castToBirthday($value)
+    private function castToBirthday($value): \Facebook\GraphNode\Birthday
     {
         return new Birthday($value);
     }

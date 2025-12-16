@@ -54,17 +54,13 @@ class SessionPersistentDataHandler implements PersistentDataInterface
      */
     public function get($key)
     {
-        if (isset($_SESSION[$this->sessionPrefix.$key])) {
-            return $_SESSION[$this->sessionPrefix.$key];
-        }
-
-        return null;
+        return $_SESSION[$this->sessionPrefix.$key] ?? null;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function set($key, $value)
+    public function set($key, $value): void
     {
         $_SESSION[$this->sessionPrefix.$key] = $value;
     }

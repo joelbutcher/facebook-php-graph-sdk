@@ -31,12 +31,7 @@ class Application implements \Serializable
     /**
      * @var string the app ID
      */
-    protected $id;
-
-    /**
-     * @var string the app secret
-     */
-    protected $secret;
+    protected string $id;
 
     /**
      * @param string $id
@@ -44,7 +39,7 @@ class Application implements \Serializable
      *
      * @throws SDKException
      */
-    public function __construct($id, $secret)
+    public function __construct($id, protected $secret)
     {
         if (!is_string($id)
           // Keeping this for BC. Integers greater than PHP_INT_MAX will make is_int() return false
@@ -53,7 +48,6 @@ class Application implements \Serializable
         }
         // We cast as a string in case a valid int was set on a 64-bit system and this is unserialised on a 32-bit system
         $this->id = (string) $id;
-        $this->secret = $secret;
     }
 
     /**
@@ -78,10 +72,8 @@ class Application implements \Serializable
 
     /**
      * Returns an app access token.
-     *
-     * @return AccessToken
      */
-    public function getAccessToken()
+    public function getAccessToken(): \Facebook\Authentication\AccessToken
     {
         return new AccessToken($this->id.'|'.$this->secret);
     }
@@ -101,9 +93,9 @@ class Application implements \Serializable
      *
      * @param string $serialized
      */
-    public function unserialize($serialized)
+    public function unserialize($serialized): void
     {
-        list($id, $secret) = explode('|', $serialized);
+        [$id, $secret] = explode('|', $serialized);
 
         $this->__construct($id, $secret);
     }

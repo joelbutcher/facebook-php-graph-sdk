@@ -28,17 +28,15 @@ class UrlDetectionHandler implements UrlDetectionInterface
     /**
      * {@inheritdoc}
      */
-    public function getCurrentUrl()
+    public function getCurrentUrl(): string
     {
         return $this->getHttpScheme().'://'.$this->getHostName().$this->getServerVar('REQUEST_URI');
     }
 
     /**
      * Get the currently active URL scheme.
-     *
-     * @return string
      */
-    protected function getHttpScheme()
+    protected function getHttpScheme(): string
     {
         return $this->isBehindSsl() ? 'https' : 'http';
     }
@@ -68,10 +66,8 @@ class UrlDetectionHandler implements UrlDetectionInterface
      * Detects an active SSL protocol value.
      *
      * @param string $protocol
-     *
-     * @return bool
      */
-    protected function protocolWithActiveSsl($protocol)
+    protected function protocolWithActiveSsl($protocol): bool
     {
         $protocol = strtolower((string) $protocol);
 
@@ -84,10 +80,8 @@ class UrlDetectionHandler implements UrlDetectionInterface
      * Some elements adapted from
      *
      * @see https://github.com/symfony/HttpFoundation/blob/master/Request.php
-     *
-     * @return string
      */
-    protected function getHostName()
+    protected function getHostName(): string
     {
         // Check for proxy first
         $header = $this->getHeader('X_FORWARDED_HOST');
@@ -102,7 +96,7 @@ class UrlDetectionHandler implements UrlDetectionInterface
 
         // trim and remove port number from host
         // host is lowercase as per RFC 952/2181
-        $host = strtolower(preg_replace('/:\d+$/', '', trim($host)));
+        $host = strtolower((string) preg_replace('/:\d+$/', '', trim($host)));
 
         // Port number
         $scheme = $this->getHttpScheme();
@@ -117,7 +111,7 @@ class UrlDetectionHandler implements UrlDetectionInterface
         return $host.$appendPort;
     }
 
-    protected function getCurrentPort()
+    protected function getCurrentPort(): string
     {
         // Check for proxy first
         $port = $this->getHeader('X_FORWARDED_PORT');
@@ -148,11 +142,10 @@ class UrlDetectionHandler implements UrlDetectionInterface
     /**
      * Gets a value from the HTTP request headers.
      *
-     * @param string $key
      *
      * @return string
      */
-    protected function getHeader($key)
+    protected function getHeader(string $key)
     {
         return $this->getServerVar('HTTP_'.$key);
     }
@@ -162,16 +155,14 @@ class UrlDetectionHandler implements UrlDetectionInterface
      * Could prevent unintended redirections.
      *
      * @param string $header
-     *
-     * @return bool
      */
-    protected function isValidForwardedHost($header)
+    protected function isValidForwardedHost($header): bool
     {
         $elements = explode(',', $header);
         $host = $elements[count($elements) - 1];
 
         return preg_match("/^([a-z\d](-*[a-z\d])*)(\.([a-z\d](-*[a-z\d])*))*$/i", $host) //valid chars check
-            && 0 < strlen($host) && strlen($host) < 254 //overall length check
+            && $host !== '' && strlen($host) < 254 //overall length check
             && preg_match("/^[^\.]{1,63}(\.[^\.]{1,63})*$/", $host); //length of each label
     }
 }

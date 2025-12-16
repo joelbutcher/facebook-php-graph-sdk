@@ -28,7 +28,7 @@ use PHPUnit\Framework\TestCase;
 
 class RequestUrlEncodedTest extends TestCase
 {
-    public function testCanProperlyEncodeAnArrayOfParams()
+    public function testCanProperlyEncodeAnArrayOfParams(): void
     {
         $message = new RequestBodyUrlEncoded([
             'foo'          => 'bar',
@@ -39,7 +39,7 @@ class RequestUrlEncodedTest extends TestCase
         $this->assertEquals('foo=bar&scawy_vawues=%40FooBar+is+a+real+twitter+handle.', $body);
     }
 
-    public function testSupportsMultidimensionalParams()
+    public function testSupportsMultidimensionalParams(): void
     {
         $message = new RequestBodyUrlEncoded([
             'foo'       => 'bar',

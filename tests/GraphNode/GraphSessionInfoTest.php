@@ -40,7 +40,7 @@ class GraphSessionInfoTest extends TestCase
         $this->responseMock = \Mockery::mock(Response::class);
     }
 
-    public function testDatesGetCastToDateTime()
+    public function testDatesGetCastToDateTime(): void
     {
         $dataFromGraph = [
             'expires_at' => 123,

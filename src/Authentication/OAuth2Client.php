@@ -39,27 +39,6 @@ class OAuth2Client
     const BASE_AUTHORIZATION_URL = 'https://www.facebook.com';
 
     /**
-     * The Application entity.
-     *
-     * @var Application
-     */
-    protected $app;
-
-    /**
-     * The Facebook client.
-     *
-     * @var Client
-     */
-    protected $client;
-
-    /**
-     * The version of the Graph API to use.
-     *
-     * @var string
-     */
-    protected $graphVersion;
-
-    /**
      * The last request sent to Graph.
      *
      * @var null|Request
@@ -67,15 +46,23 @@ class OAuth2Client
     protected $lastRequest;
 
     /**
-     * @param Application $app
-     * @param Client      $client
      * @param string      $graphVersion the version of the Graph API to use
      */
-    public function __construct(Application $app, Client $client, $graphVersion)
+    public function __construct(
+        /**
+         * The Application entity.
+         */
+        protected \Facebook\Application $app,
+        /**
+         * The Facebook client.
+         */
+        protected \Facebook\Client $client,
+        /**
+         * The version of the Graph API to use.
+         */
+        protected $graphVersion
+    )
     {
-        $this->app = $app;
-        $this->client = $client;
-        $this->graphVersion = $graphVersion;
     }
 
     /**
@@ -93,10 +80,8 @@ class OAuth2Client
      * Get the metadata associated with the access token.
      *
      * @param AccessToken|string $accessToken the access token to debug
-     *
-     * @return AccessTokenMetadata
      */
-    public function debugToken($accessToken)
+    public function debugToken($accessToken): \Facebook\Authentication\AccessTokenMetadata
     {
         $accessToken = $accessToken instanceof AccessToken ? $accessToken->getValue() : $accessToken;
         $params = ['input_token' => $accessToken];
@@ -124,10 +109,8 @@ class OAuth2Client
      * @param array  $scope       an array of permissions to request
      * @param array  $params      an array of parameters to generate URL
      * @param string $separator   the separator to use in http_build_query()
-     *
-     * @return string
      */
-    public function getAuthorizationUrl($redirectUrl, $state, array $scope = [], array $params = [], $separator = '&')
+    public function getAuthorizationUrl($redirectUrl, $state, array $scope = [], array $params = [], $separator = '&'): string
     {
         $params += [
             'client_id'     => $this->app->getId(),
@@ -210,13 +193,11 @@ class OAuth2Client
     /**
      * Send a request to the OAuth endpoint.
      *
-     * @param array $params
      *
      * @throws SDKException
      *
-     * @return AccessToken
      */
-    protected function requestAnAccessToken(array $params)
+    protected function requestAnAccessToken(array $params): \Facebook\Authentication\AccessToken
     {
         $response = $this->sendRequestWithClientParams('/oauth/access_token', $params);
         $data = $response->getDecodedBody();
@@ -246,11 +227,9 @@ class OAuth2Client
      * Send a request to Graph with an app access token.
      *
      * @param string                  $endpoint
-     * @param array                   $params
      * @param null|AccessToken|string $accessToken
      *
      * @throws ResponseException
-     *
      * @return Response
      */
     protected function sendRequestWithClientParams($endpoint, array $params, $accessToken = null)
@@ -274,10 +253,8 @@ class OAuth2Client
 
     /**
      * Returns the client_* params for OAuth requests.
-     *
-     * @return array
      */
-    protected function getClientParams()
+    protected function getClientParams(): array
     {
         return [
             'client_id'     => $this->app->getId(),

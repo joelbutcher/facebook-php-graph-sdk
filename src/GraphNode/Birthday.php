@@ -30,15 +30,9 @@ use DateTime;
  */
 class Birthday extends DateTime
 {
-    /**
-     * @var bool
-     */
-    private $hasDate = false;
+    private readonly bool $hasDate;
 
-    /**
-     * @var bool
-     */
-    private $hasYear = false;
+    private readonly bool $hasYear;
 
     /**
      * Parses Graph birthday format to set indication flags, possible values:.

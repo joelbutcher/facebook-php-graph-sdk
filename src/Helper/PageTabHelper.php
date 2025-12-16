@@ -61,19 +61,13 @@ class PageTabHelper extends CanvasHelper
      */
     public function getPageData($key, $default = null)
     {
-        if (isset($this->pageData[$key])) {
-            return $this->pageData[$key];
-        }
-
-        return $default;
+        return $this->pageData[$key] ?? $default;
     }
 
     /**
      * Returns true if the user is an admin.
-     *
-     * @return bool
      */
-    public function isAdmin()
+    public function isAdmin(): bool
     {
         return $this->getPageData('admin') === true;
     }

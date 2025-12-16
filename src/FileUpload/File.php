@@ -28,21 +28,6 @@ use Facebook\Exception\SDKException;
 class File
 {
     /**
-     * @var string the path to the file on the system
-     */
-    protected $path;
-
-    /**
-     * @var int The maximum bytes to read. Defaults to -1 (read all the remaining buffer).
-     */
-    private $maxLength;
-
-    /**
-     * @var int Seek to the specified offset before reading. If this number is negative, no seeking will occur and reading will start from the current position.
-     */
-    private $offset;
-
-    /**
      * @var resource the stream pointing to the file
      */
     protected $stream;
@@ -50,17 +35,14 @@ class File
     /**
      * Creates a new File entity.
      *
-     * @param string $filePath
+     * @param string $path
      * @param int    $maxLength
      * @param int    $offset
      *
      * @throws SDKException
      */
-    public function __construct($filePath, $maxLength = -1, $offset = -1)
+    public function __construct(protected $path, private $maxLength = -1, private $offset = -1)
     {
-        $this->path = $filePath;
-        $this->maxLength = $maxLength;
-        $this->offset = $offset;
         $this->open();
     }
 
@@ -77,7 +59,7 @@ class File
      *
      * @throws SDKException
      */
-    public function open()
+    public function open(): void
     {
         if (!$this->isRemoteFile($this->path) && !is_readable($this->path)) {
             throw new SDKException('Failed to create File entity. Unable to read resource: '.$this->path.'.');
@@ -93,7 +75,7 @@ class File
     /**
      * Stops the file stream.
      */
-    public function close()
+    public function close(): void
     {
         if (is_resource($this->stream)) {
             fclose($this->stream);
@@ -105,17 +87,15 @@ class File
      *
      * @return string
      */
-    public function getContents()
+    public function getContents(): string|false
     {
         return stream_get_contents($this->stream, $this->maxLength, $this->offset);
     }
 
     /**
      * Return the name of the file.
-     *
-     * @return string
      */
-    public function getFileName()
+    public function getFileName(): string
     {
         return basename($this->path);
     }
@@ -135,7 +115,7 @@ class File
      *
      * @return int
      */
-    public function getSize()
+    public function getSize(): int|false
     {
         return filesize($this->path);
     }
@@ -154,10 +134,8 @@ class File
      * Returns true if the path to the file is remote.
      *
      * @param string $pathToFile
-     *
-     * @return bool
      */
-    protected function isRemoteFile($pathToFile)
+    protected function isRemoteFile($pathToFile): bool
     {
         return preg_match('/^(https?|ftp):\/\/.*/', $pathToFile) === 1;
     }

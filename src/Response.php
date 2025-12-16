@@ -30,29 +30,9 @@ use Facebook\GraphNode\GraphNodeFactory;
 class Response
 {
     /**
-     * @var int the HTTP status code response from Graph
-     */
-    protected $httpStatusCode;
-
-    /**
-     * @var array the headers returned from Graph
-     */
-    protected $headers;
-
-    /**
-     * @var string the raw body of the response from Graph
-     */
-    protected $body;
-
-    /**
      * @var array the decoded body of the Graph response
      */
     protected $decodedBody = [];
-
-    /**
-     * @var Request the original request that returned this response
-     */
-    protected $request;
 
     /**
      * @var SDKException the exception thrown by this request
@@ -62,18 +42,15 @@ class Response
     /**
      * Creates a new Response entity.
      *
-     * @param Request     $request
      * @param null|string $body
      * @param null|int    $httpStatusCode
      * @param null|array  $headers
      */
-    public function __construct(Request $request, $body = null, $httpStatusCode = null, array $headers = [])
+    public function __construct(/**
+     * @var Request the original request that returned this response
+     */
+    protected \Facebook\Request $request, protected $body = null, protected $httpStatusCode = null, protected array $headers = [])
     {
-        $this->request = $request;
-        $this->body = $body;
-        $this->httpStatusCode = $httpStatusCode;
-        $this->headers = $headers;
-
         $this->decodeBody();
     }
 
@@ -179,10 +156,8 @@ class Response
 
     /**
      * Returns true if Graph returned an error message.
-     *
-     * @return bool
      */
-    public function isError()
+    public function isError(): bool
     {
         return isset($this->decodedBody['error']);
     }
@@ -192,7 +167,7 @@ class Response
      *
      * @throws SDKException
      */
-    public function throwException()
+    public function throwException(): never
     {
         throw $this->thrownException;
     }
@@ -200,7 +175,7 @@ class Response
     /**
      * Instantiates an exception to be thrown later.
      */
-    public function makeException()
+    public function makeException(): void
     {
         $this->thrownException = ResponseException::create($this);
     }
@@ -226,7 +201,7 @@ class Response
      *    a short-lived access token for a long-lived access token
      * - And sometimes nothing :/ but that'd be a bug.
      */
-    public function decodeBody()
+    public function decodeBody(): void
     {
         $this->decodedBody = json_decode($this->body, true);
 

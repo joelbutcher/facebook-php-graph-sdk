@@ -55,7 +55,7 @@ class GraphEdgeTest extends TestCase
         );
     }
 
-    public function testNonGetRequestsWillThrow()
+    public function testNonGetRequestsWillThrow(): void
     {
         $this->expectException(\Facebook\Exception\SDKException::class);
 
@@ -64,7 +64,7 @@ class GraphEdgeTest extends TestCase
         $graphEdge->validateForPagination();
     }
 
-    public function testCanReturnGraphGeneratedPaginationEndpoints()
+    public function testCanReturnGraphGeneratedPaginationEndpoints(): void
     {
         $graphEdge = new GraphEdge(
             $this->request,
@@ -78,7 +78,7 @@ class GraphEdgeTest extends TestCase
         $this->assertEquals('/998899/photos?pretty=0&limit=25&before=foo_before_cursor', $prevPage);
     }
 
-    public function testCanInstantiateNewPaginationRequest()
+    public function testCanInstantiateNewPaginationRequest(): void
     {
         $graphEdge = new GraphEdge(
             $this->request,
@@ -97,7 +97,7 @@ class GraphEdgeTest extends TestCase
         $this->assertEquals('/v1337/998899/photos?access_token=foo_token&appsecret_proof=857d5f035a894f16b4180f19966e055cdeab92d4d53017b13dccd6d43b6497af&before=foo_before_cursor&foo=bar&limit=25&pretty=0', $prevPage->getUrl());
     }
 
-    public function testCanMapOverNodes()
+    public function testCanMapOverNodes(): void
     {
         $graphEdge = new GraphEdge(
             $this->request,
@@ -111,14 +111,14 @@ class GraphEdgeTest extends TestCase
 
         $output = '';
 
-        $graphEdge->map(function (GraphNode $node) use (&$output) {
+        $graphEdge->map(function (GraphNode $node) use (&$output): void {
             $output .= $node->getField('name');
         });
 
         $this->assertEquals('dummy1dummy2', $output);
     }
 
-    public function testAnExistingPropertyCanBeAccessed()
+    public function testAnExistingPropertyCanBeAccessed(): void
     {
         $graphEdge = new GraphEdge($this->request, ['foo' => 'bar']);
 
@@ -126,7 +126,7 @@ class GraphEdgeTest extends TestCase
         $this->assertEquals('bar', $field);
     }
 
-    public function testAMissingPropertyWillReturnNull()
+    public function testAMissingPropertyWillReturnNull(): void
     {
         $graphEdge = new GraphEdge($this->request, ['foo' => 'bar']);
         $field = $graphEdge->getField('baz');
@@ -134,7 +134,7 @@ class GraphEdgeTest extends TestCase
         $this->assertNull($field, 'Expected the property to return null.');
     }
 
-    public function testAMissingPropertyWillReturnTheDefault()
+    public function testAMissingPropertyWillReturnTheDefault(): void
     {
         $graphEdge = new GraphEdge($this->request, ['foo' => 'bar']);
 
@@ -142,7 +142,7 @@ class GraphEdgeTest extends TestCase
         $this->assertEquals('faz', $field);
     }
 
-    public function testFalseDefaultsWillReturnSameType()
+    public function testFalseDefaultsWillReturnSameType(): void
     {
         $graphEdge = new GraphEdge($this->request, ['foo' => 'bar']);
 
@@ -156,7 +156,7 @@ class GraphEdgeTest extends TestCase
         $this->assertFalse($field);
     }
 
-    public function testTheKeysFromTheCollectionCanBeReturned()
+    public function testTheKeysFromTheCollectionCanBeReturned(): void
     {
         $graphEdge = new GraphEdge(
             $this->request,
@@ -171,13 +171,13 @@ class GraphEdgeTest extends TestCase
         $this->assertEquals(['key1', 'key2', 'key3'], $fieldNames);
     }
 
-    public function testAnArrayCanBeInjectedViaTheConstructor()
+    public function testAnArrayCanBeInjectedViaTheConstructor(): void
     {
         $graphEdge = new GraphEdge($this->request, ['foo', 'bar']);
         $this->assertEquals(['foo', 'bar'], $graphEdge->asArray());
     }
 
-    public function testACollectionCanBeConvertedToProperJson()
+    public function testACollectionCanBeConvertedToProperJson(): void
     {
         $graphEdge = new GraphEdge($this->request, ['foo', 'bar', 123]);
 
@@ -186,7 +186,7 @@ class GraphEdgeTest extends TestCase
         $this->assertEquals('["foo","bar",123]', $graphEdgeAsString);
     }
 
-    public function testACollectionCanBeCounted()
+    public function testACollectionCanBeCounted(): void
     {
         $graphEdge = new GraphEdge($this->request, ['foo', 'bar', 'baz']);
 
@@ -195,7 +195,7 @@ class GraphEdgeTest extends TestCase
         $this->assertEquals(3, $graphEdgeCount);
     }
 
-    public function testACollectionCanBeAccessedAsAnArray()
+    public function testACollectionCanBeAccessedAsAnArray(): void
     {
         $graphEdge = new GraphEdge($this->request, ['foo' => 'bar', 'faz' => 'baz']);
 
@@ -203,7 +203,7 @@ class GraphEdgeTest extends TestCase
         $this->assertEquals('baz', $graphEdge['faz']);
     }
 
-    public function testACollectionCanBeIteratedOver()
+    public function testACollectionCanBeIteratedOver(): void
     {
         $graphEdge = new GraphEdge($this->request, ['foo' => 'bar', 'faz' => 'baz']);
 

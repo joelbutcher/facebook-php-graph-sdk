@@ -32,7 +32,7 @@ class JavaScriptHelperTest extends TestCase
 {
     public $rawSignedRequestAuthorized = 'vdZXlVEQ5NTRRTFvJ7Jeo_kP4SKnBDvbNP0fEYKS0Sg=.eyJvYXV0aF90b2tlbiI6ImZvb190b2tlbiIsImFsZ29yaXRobSI6IkhNQUMtU0hBMjU2IiwiaXNzdWVkX2F0IjoxNDAyNTUxMDMxLCJ1c2VyX2lkIjoiMTIzIn0=';
 
-    public function testARawSignedRequestCanBeRetrievedFromCookieData()
+    public function testARawSignedRequestCanBeRetrievedFromCookieData(): void
     {
         $_COOKIE['fbsr_123'] = $this->rawSignedRequestAuthorized;
 

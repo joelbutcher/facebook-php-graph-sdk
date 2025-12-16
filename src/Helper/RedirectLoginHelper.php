@@ -40,28 +40,22 @@ class RedirectLoginHelper
     const CSRF_LENGTH = 32;
 
     /**
-     * @var OAuth2Client The OAuth 2.0 client service.
-     */
-    protected $oAuth2Client;
-
-    /**
      * @var UrlDetectionInterface the URL detection handler
      */
-    protected $urlDetectionHandler;
+    protected \Facebook\Url\UrlDetectionInterface $urlDetectionHandler;
 
     /**
      * @var PersistentDataInterface the persistent data handler
      */
-    protected $persistentDataHandler;
+    protected \Facebook\PersistentData\PersistentDataInterface $persistentDataHandler;
 
     /**
      * @param OAuth2Client                 $oAuth2Client          The OAuth 2.0 client service.
      * @param null|PersistentDataInterface $persistentDataHandler the persistent data handler
      * @param null|UrlDetectionInterface   $urlHandler            the URL detection handler
      */
-    public function __construct(OAuth2Client $oAuth2Client, PersistentDataInterface $persistentDataHandler = null, UrlDetectionInterface $urlHandler = null)
+    public function __construct(protected \Facebook\Authentication\OAuth2Client $oAuth2Client, ?PersistentDataInterface $persistentDataHandler = null, ?UrlDetectionInterface $urlHandler = null)
     {
-        $this->oAuth2Client = $oAuth2Client;
         $this->persistentDataHandler = $persistentDataHandler ?: new SessionPersistentDataHandler();
         $this->urlDetectionHandler = $urlHandler ?: new UrlDetectionHandler();
     }
@@ -104,7 +98,7 @@ class RedirectLoginHelper
         return $this->oAuth2Client->getAuthorizationUrl($redirectUrl, $state, $scope, $params, $separator);
     }
 
-    private function getPseudoRandomString()
+    private function getPseudoRandomString(): string
     {
         return bin2hex(random_bytes(static::CSRF_LENGTH));
     }
@@ -131,10 +125,8 @@ class RedirectLoginHelper
      * @param string             $separator   the separator to use in http_build_query()
      *
      * @throws SDKException
-     *
-     * @return string
      */
-    public function getLogoutUrl($accessToken, $next, $separator = '&')
+    public function getLogoutUrl($accessToken, $next, $separator = '&'): string
     {
         if (!$accessToken instanceof AccessToken) {
             $accessToken = new AccessToken($accessToken);
@@ -235,7 +227,7 @@ class RedirectLoginHelper
     /**
      * Resets the CSRF so that it doesn't get reused.
      */
-    private function resetCsrf()
+    private function resetCsrf(): void
     {
         $this->persistentDataHandler->set('state', null);
     }
@@ -303,11 +295,10 @@ class RedirectLoginHelper
     /**
      * Returns a value from a GET param.
      *
-     * @param string $key
      *
      * @return null|string
      */
-    private function getInput($key)
+    private function getInput(string $key)
     {
         return $_GET[$key] ?? null;
     }

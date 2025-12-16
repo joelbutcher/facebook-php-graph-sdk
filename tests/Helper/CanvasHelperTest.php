@@ -43,7 +43,7 @@ class CanvasHelperTest extends TestCase
         $this->helper = new CanvasHelper($app, new Client(), 'v0.0');
     }
 
-    public function testSignedRequestDataCanBeRetrievedFromPostData()
+    public function testSignedRequestDataCanBeRetrievedFromPostData(): void
     {
         $_POST['signed_request'] = $this->rawSignedRequestAuthorized;
 

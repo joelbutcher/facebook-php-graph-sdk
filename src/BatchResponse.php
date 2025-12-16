@@ -30,25 +30,18 @@ use IteratorAggregate;
 class BatchResponse extends Response implements IteratorAggregate, ArrayAccess
 {
     /**
-     * @var BatchRequest the original entity that made the batch request
-     */
-    protected $batchRequest;
-
-    /**
      * @var Response[] an array of Response entities
      */
     protected $responses = [];
 
     /**
      * Creates a new Response entity.
-     *
-     * @param BatchRequest $batchRequest
-     * @param Response     $response
      */
-    public function __construct(BatchRequest $batchRequest, Response $response)
+    public function __construct(/**
+     * @var BatchRequest the original entity that made the batch request
+     */
+    protected \Facebook\BatchRequest $batchRequest, Response $response)
     {
-        $this->batchRequest = $batchRequest;
-
         $request = $response->getRequest();
         $body = $response->getBody();
         $httpStatusCode = $response->getHttpStatusCode();
@@ -72,10 +65,8 @@ class BatchResponse extends Response implements IteratorAggregate, ArrayAccess
     /**
      * The main batch response will be an array of requests so
      * we need to iterate over all the responses.
-     *
-     * @param array $responses
      */
-    public function setResponses(array $responses)
+    public function setResponses(array $responses): void
     {
         $this->responses = [];
 
@@ -90,7 +81,7 @@ class BatchResponse extends Response implements IteratorAggregate, ArrayAccess
      * @param int        $key
      * @param null|array $response
      */
-    public function addResponse($key, $response)
+    public function addResponse($key, array $response): void
     {
         $originalRequestName = $this->batchRequest[$key]['name'] ?? $key;
         $originalRequest = $this->batchRequest[$key]['request'] ?? null;
@@ -119,7 +110,7 @@ class BatchResponse extends Response implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritdoc}
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->addResponse($offset, $value);
     }
@@ -135,7 +126,7 @@ class BatchResponse extends Response implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritdoc}
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->responses[$offset]);
     }
@@ -153,11 +144,9 @@ class BatchResponse extends Response implements IteratorAggregate, ArrayAccess
      *
      * @TODO replace with array_column() when PHP 5.5 is supported.
      *
-     * @param array $batchHeaders
      *
-     * @return array
      */
-    private function normalizeBatchHeaders(array $batchHeaders)
+    private function normalizeBatchHeaders(array $batchHeaders): array
     {
         $headers = [];
 

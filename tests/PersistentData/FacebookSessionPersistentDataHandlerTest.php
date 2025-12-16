@@ -28,14 +28,14 @@ use PHPUnit\Framework\TestCase;
 
 class SessionPersistentDataHandlerTest extends TestCase
 {
-    public function testInactiveSessionsWillThrow()
+    public function testInactiveSessionsWillThrow(): void
     {
         $this->expectException(\Facebook\Exception\SDKException::class);
 
         new SessionPersistentDataHandler();
     }
 
-    public function testCanSetAValue()
+    public function testCanSetAValue(): void
     {
         $handler = new SessionPersistentDataHandler($enableSessionCheck = false);
         $handler->set('foo', 'bar');
@@ -43,7 +43,7 @@ class SessionPersistentDataHandlerTest extends TestCase
         $this->assertEquals('bar', $_SESSION['FBRLH_foo']);
     }
 
-    public function testCanGetAValue()
+    public function testCanGetAValue(): void
     {
         $_SESSION['FBRLH_faz'] = 'baz';
         $handler = new SessionPersistentDataHandler($enableSessionCheck = false);
@@ -52,7 +52,7 @@ class SessionPersistentDataHandlerTest extends TestCase
         $this->assertEquals('baz', $value);
     }
 
-    public function testGettingAValueThatDoesntExistWillReturnNull()
+    public function testGettingAValueThatDoesntExistWillReturnNull(): void
     {
         $handler = new SessionPersistentDataHandler($enableSessionCheck = false);
         $value = $handler->get('does_not_exist');

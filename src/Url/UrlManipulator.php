@@ -33,7 +33,7 @@ class UrlManipulator
      *
      * @return string the URL with the params removed
      */
-    public static function removeParamsFromUrl($url, array $paramsToFilter)
+    public static function removeParamsFromUrl($url, array $paramsToFilter): string
     {
         $parts = parse_url($url);
 
@@ -66,20 +66,18 @@ class UrlManipulator
      *
      * @param string $url       the URL that will receive the params
      * @param array  $newParams the params to append to the URL
-     *
-     * @return string
      */
-    public static function appendParamsToUrl($url, array $newParams = [])
+    public static function appendParamsToUrl(string $url, array $newParams = []): string
     {
-        if (empty($newParams)) {
+        if ($newParams === []) {
             return $url;
         }
 
-        if (strpos($url, '?') === false) {
+        if (!str_contains($url, '?')) {
             return $url.'?'.http_build_query($newParams, '', '&');
         }
 
-        list($path, $query) = explode('?', $url, 2);
+        [$path, $query] = explode('?', $url, 2);
         $existingParams = [];
         parse_str($query, $existingParams);
 
@@ -96,10 +94,8 @@ class UrlManipulator
      * Returns the params from a URL in the form of an array.
      *
      * @param string $url the URL to parse the params from
-     *
-     * @return array
      */
-    public static function getParamsAsArray($url)
+    public static function getParamsAsArray($url): array
     {
         $query = parse_url($url, PHP_URL_QUERY);
         if (!$query) {
@@ -145,7 +141,7 @@ class UrlManipulator
             return '';
         }
 
-        return strpos($string, '/') === 0 ? $string : '/'.$string;
+        return str_starts_with($string, '/') ? $string : '/'.$string;
     }
 
     /**

@@ -26,44 +26,13 @@ namespace Facebook\FileUpload;
 class TransferChunk
 {
     /**
-     * @var File the file to chunk during upload
-     */
-    private $file;
-
-    /**
-     * @var int the ID of the upload session
-     */
-    private $uploadSessionId;
-
-    /**
-     * @var int start byte position of the next file chunk
-     */
-    private $startOffset;
-
-    /**
-     * @var int end byte position of the next file chunk
-     */
-    private $endOffset;
-
-    /**
-     * @var int the ID of the video
-     */
-    private $videoId;
-
-    /**
-     * @param File $file
      * @param int  $uploadSessionId
      * @param int  $videoId
      * @param int  $startOffset
      * @param int  $endOffset
      */
-    public function __construct(File $file, $uploadSessionId, $videoId, $startOffset, $endOffset)
+    public function __construct(private readonly File $file, private $uploadSessionId, private $videoId, private $startOffset, private $endOffset)
     {
-        $this->file = $file;
-        $this->uploadSessionId = $uploadSessionId;
-        $this->videoId = $videoId;
-        $this->startOffset = $startOffset;
-        $this->endOffset = $endOffset;
     }
 
     /**
@@ -78,10 +47,8 @@ class TransferChunk
 
     /**
      * Return a File entity with partial content.
-     *
-     * @return File
      */
-    public function getPartialFile()
+    public function getPartialFile(): \Facebook\FileUpload\File
     {
         $maxLength = $this->endOffset - $this->startOffset;
 
@@ -100,10 +67,8 @@ class TransferChunk
 
     /**
      * Check whether is the last chunk.
-     *
-     * @return bool
      */
-    public function isLastChunk()
+    public function isLastChunk(): bool
     {
         return $this->startOffset === $this->endOffset;
     }
