@@ -41,6 +41,9 @@ use Facebook\PersistentData\PersistentDataFactory;
 use Facebook\PersistentData\PersistentDataInterface;
 use Facebook\Url\UrlDetectionHandler;
 use Facebook\Url\UrlDetectionInterface;
+use Psl\Dict;
+use Psl\Env;
+use Psl\Iter;
 use Psr\Http\Client\ClientInterface;
 
 class Facebook
@@ -108,9 +111,9 @@ class Facebook
      */
     public function __construct(array $config = [])
     {
-        $config = array_merge([
-            'app_id'                  => getenv(static::APP_ID_ENV_NAME),
-            'app_secret'              => getenv(static::APP_SECRET_ENV_NAME),
+        $config = Dict\merge([
+            'app_id'                  => Env\get_var(static::APP_ID_ENV_NAME) ?? '',
+            'app_secret'              => Env\get_var(static::APP_SECRET_ENV_NAME) ?? '',
             'default_graph_version'   => null,
             'enable_beta_mode'        => false,
             'http_client'             => null,
@@ -413,7 +416,7 @@ class Facebook
         $subClassName = $graphEdge->getSubClassName();
         $graphEdge = $this->lastResponse->getGraphEdge($subClassName, false);
 
-        return count($graphEdge) > 0 ? $graphEdge : null;
+        return Iter\count($graphEdge) > 0 ? $graphEdge : null;
     }
 
     /**

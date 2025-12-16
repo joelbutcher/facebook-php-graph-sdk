@@ -28,6 +28,7 @@ namespace Facebook;
 use Facebook\Exception\SDKException;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Http\Discovery\Psr18ClientDiscovery;
+use Psl\Str;
 use Psr\Http\Client\ClientInterface;
 
 class Client
@@ -192,7 +193,7 @@ class Client
         // Prepare headers from associative array to a single string for each header.
         $responseHeaders = [];
         foreach ($psr7Response->getHeaders() as $name => $values) {
-            $responseHeaders[] = sprintf('%s: %s', $name, implode(', ', $values));
+            $responseHeaders[] = Str\format('%s: %s', $name, Str\join($values, ', '));
         }
 
         $Response = new Response(

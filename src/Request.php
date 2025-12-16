@@ -32,6 +32,8 @@ use Facebook\FileUpload\Video;
 use Facebook\Http\RequestBodyMultipart;
 use Facebook\Http\RequestBodyUrlEncoded;
 use Facebook\Url\UrlManipulator;
+use Psl\Dict;
+use Psl\Str;
 
 /**
  * Class Request.
@@ -204,7 +206,7 @@ class Request
      */
     public function setMethod($method): void
     {
-        $this->method = strtoupper((string) $method);
+        $this->method = Str\uppercase((string) $method);
     }
 
     /**
@@ -228,7 +230,7 @@ class Request
             throw new SDKException('HTTP method not specified.');
         }
 
-        if (!in_array($this->method, ['GET', 'POST', 'DELETE'])) {
+        if (!in_array($this->method, ['GET', 'POST', 'DELETE'], true)) {
             throw new SDKException('Invalid HTTP method specified.');
         }
     }
@@ -278,7 +280,7 @@ class Request
             $headers['If-None-Match'] = $this->eTag;
         }
 
-        return array_merge($this->headers, $headers);
+        return Dict\merge($this->headers, $headers);
     }
 
     /**
@@ -286,7 +288,7 @@ class Request
      */
     public function setHeaders(array $headers): void
     {
-        $this->headers = array_merge($this->headers, $headers);
+        $this->headers = Dict\merge($this->headers, $headers);
     }
 
     /**
@@ -330,7 +332,7 @@ class Request
      */
     public function dangerouslySetParams(array $params = []): static
     {
-        $this->params = array_merge($this->params, $params);
+        $this->params = Dict\merge($this->params, $params);
 
         return $this;
     }
