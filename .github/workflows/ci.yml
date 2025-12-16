@@ -5,16 +5,17 @@ on:
     branches: [ main, 8.x ]
   pull_request:
     branches: [ main, 8.x ]
+  schedule:
+    - cron: '0 0 * * *' # Daily at midnight UTC
 
 jobs:
-  test:
-    name: PHP ${{ matrix.php-version }} on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
+  quality-checks:
+    name: Quality Checks (PHP ${{ matrix.php-version }})
+    runs-on: ubuntu-latest
     
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
         php-version: ['8.4']
     
     steps:
@@ -31,14 +32,11 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction
       
+      - name: Run PHPStan
+        run: composer test:types
+      
       - name: Run PHPUnit tests
         run: composer test:unit
       
-      - name: Run PHPStan
-        run: composer test:types
-        continue-on-error: true
-      
       - name: Run Rector (check mode)
         run: composer rector:check
-        continue-on-error: true
-
