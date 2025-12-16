@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, 8.x ]
+  pull_request:
+    branches: [ main, 8.x ]
+
+jobs:
+  test:
+    name: PHP ${{ matrix.php-version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        php-version: ['8.4']
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+          tools: composer
+      
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction
+      
+      - name: Run PHPUnit tests
+        run: composer test:unit
+      
+      - name: Run PHPStan
+        run: composer test:types
+        continue-on-error: true
+      
+      - name: Run Rector (check mode)
+        run: composer rector:check
+        continue-on-error: true
+
