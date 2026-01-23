@@ -167,7 +167,7 @@ class Request
      *
      * @param null|Application $app
      */
-    public function setApp(Application $app = null)
+    public function setApp(?Application $app = null)
     {
         $this->app = $app;
     }
