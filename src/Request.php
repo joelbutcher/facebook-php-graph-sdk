@@ -92,7 +92,7 @@ class Request
      * @param null|string             $eTag
      * @param null|string             $graphVersion
      */
-    public function __construct(Application $app = null, $accessToken = null, $method = null, $endpoint = null, array $params = [], $eTag = null, $graphVersion = null)
+    public function __construct(?Application $app = null, $accessToken = null, $method = null, $endpoint = null, array $params = [], $eTag = null, $graphVersion = null)
     {
         $this->setApp($app);
         $this->setAccessToken($accessToken);
